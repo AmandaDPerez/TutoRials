@@ -4,7 +4,7 @@ title: Tables
 nav_order: 2
 ---
 
-# Search
+# Tables
 {: .no_toc }
 
 ## Table of contents
