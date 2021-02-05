@@ -17,6 +17,6 @@ nav_order: 2
 
 ## HTML Output Tables
 
-[Making HTML Tables with gtsummary](https://amandadperez.github.io/TutoRials/docs/Tables/tables-rmarkdown.html)
+[Making HTML Tables with gtsummary](https://amandadperez.github.io/TutoRials/docs/Tables/tables-html-gtsummary.html)
 
 
