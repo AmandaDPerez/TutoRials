@@ -1,5 +1,5 @@
 ---
-title: "Mediation with Lavaan"
+title: "Moderated Mediation"
 output: html_document
 ---
 
@@ -149,6 +149,8 @@ thirst_dat %>%
 
 ### Sources
 https://nmmichalak.github.io/nicholas_michalak/blog_entries/2018/nrg01/nrg01.html
+
+https://ademos.people.uic.edu/Chapter15.html
 
 MacKinnon, D. P. (2008). Introduction to statistical mediation analysis. New York, NY: Lawrence Erlbaum Associates.
 
