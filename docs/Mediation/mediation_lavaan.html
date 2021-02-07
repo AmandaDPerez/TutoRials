@@ -16,6 +16,8 @@
 <title>Mediation with Lavaan</title>
 
 <script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script src="data:application/javascript;base64,JChkb2N1bWVudCkucmVhZHkoZnVuY3Rpb24oKXsKICAgIGlmICh0eXBlb2YgJCgnW2RhdGEtdG9nZ2xlPSJ0b29sdGlwIl0nKS50b29sdGlwID09PSAnZnVuY3Rpb24nKSB7CiAgICAgICAgJCgnW2RhdGEtdG9nZ2xlPSJ0b29sdGlwIl0nKS50b29sdGlwKCk7CiAgICB9CiAgICBpZiAoJCgnW2RhdGEtdG9nZ2xlPSJwb3BvdmVyIl0nKS5wb3BvdmVyID09PSAnZnVuY3Rpb24nKSB7CiAgICAgICAgJCgnW2RhdGEtdG9nZ2xlPSJwb3BvdmVyIl0nKS5wb3BvdmVyKCk7CiAgICB9Cn0pOwo="></script>
+<link href="data:text/css,%0A%2Elightable%2Dminimal%20%7B%0Aborder%2Dcollapse%3A%20separate%3B%0Aborder%2Dspacing%3A%2016px%201px%3B%0Awidth%3A%20100%25%3B%0Amargin%2Dbottom%3A%2010px%3B%0A%7D%0A%2Elightable%2Dminimal%20td%20%7B%0Amargin%2Dleft%3A%205px%3B%0Amargin%2Dright%3A%205px%3B%0A%7D%0A%2Elightable%2Dminimal%20th%20%7B%0Amargin%2Dleft%3A%205px%3B%0Amargin%2Dright%3A%205px%3B%0A%7D%0A%2Elightable%2Dminimal%20thead%20tr%3Alast%2Dchild%20th%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%2300000050%3B%0Aempty%2Dcells%3A%20hide%3B%0A%7D%0A%2Elightable%2Dminimal%20tbody%20tr%3Afirst%2Dchild%20td%20%7B%0Apadding%2Dtop%3A%200%2E5em%3B%0A%7D%0A%2Elightable%2Dminimal%2Elightable%2Dhover%20tbody%20tr%3Ahover%20%7B%0Abackground%2Dcolor%3A%20%23f5f5f5%3B%0A%7D%0A%2Elightable%2Dminimal%2Elightable%2Dstriped%20tbody%20tr%3Anth%2Dchild%28even%29%20%7B%0Abackground%2Dcolor%3A%20%23f5f5f5%3B%0A%7D%0A%2Elightable%2Dclassic%20%7B%0Aborder%2Dtop%3A%200%2E16em%20solid%20%23111111%3B%0Aborder%2Dbottom%3A%200%2E16em%20solid%20%23111111%3B%0Awidth%3A%20100%25%3B%0Amargin%2Dbottom%3A%2010px%3B%0Amargin%3A%2010px%205px%3B%0A%7D%0A%2Elightable%2Dclassic%20tfoot%20tr%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dclassic%20tfoot%20tr%3Afirst%2Dchild%20td%20%7B%0Aborder%2Dtop%3A%200%2E14em%20solid%20%23111111%3B%0A%7D%0A%2Elightable%2Dclassic%20caption%20%7B%0Acolor%3A%20%23222222%3B%0A%7D%0A%2Elightable%2Dclassic%20td%20%7B%0Apadding%2Dleft%3A%205px%3B%0Apadding%2Dright%3A%205px%3B%0Acolor%3A%20%23222222%3B%0A%7D%0A%2Elightable%2Dclassic%20th%20%7B%0Apadding%2Dleft%3A%205px%3B%0Apadding%2Dright%3A%205px%3B%0Afont%2Dweight%3A%20normal%3B%0Acolor%3A%20%23222222%3B%0A%7D%0A%2Elightable%2Dclassic%20thead%20tr%3Alast%2Dchild%20th%20%7B%0Aborder%2Dbottom%3A%200%2E10em%20solid%20%23111111%3B%0A%7D%0A%2Elightable%2Dclassic%2Elightable%2Dhover%20tbody%20tr%3Ahover%20%7B%0Abackground%2Dcolor%3A%20%23F9EEC1%3B%0A%7D%0A%2Elightable%2Dclassic%2Elightable%2Dstriped%20tbody%20tr%3Anth%2Dchild%28even%29%20%7B%0Abackground%2Dcolor%3A%20%23f5f5f5%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20%7B%0Aborder%2Dtop%3A%203px%20double%20%23111111%3B%0Aborder%2Dbottom%3A%203px%20double%20%23111111%3B%0Awidth%3A%20100%25%3B%0Amargin%2Dbottom%3A%2010px%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20tfoot%20tr%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20tfoot%20tr%3Afirst%2Dchild%20td%20%7B%0Aborder%2Dtop%3A%203px%20double%20%23111111%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20caption%20%7B%0Acolor%3A%20%23222222%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20td%20%7B%0Apadding%2Dleft%3A%205px%3B%0Apadding%2Dright%3A%205px%3B%0Acolor%3A%20%23222222%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20th%20%7B%0Apadding%2Dleft%3A%205px%3B%0Apadding%2Dright%3A%205px%3B%0Afont%2Dweight%3A%20normal%3B%0Acolor%3A%20%23222222%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20tbody%20tr%3Alast%2Dchild%20td%20%7B%0Aborder%2Dbottom%3A%203px%20double%20%23111111%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%20thead%20tr%3Alast%2Dchild%20th%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23111111%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%2Elightable%2Dhover%20tbody%20tr%3Ahover%20%7B%0Abackground%2Dcolor%3A%20%23F9EEC1%3B%0A%7D%0A%2Elightable%2Dclassic%2D2%2Elightable%2Dstriped%20tbody%20tr%3Anth%2Dchild%28even%29%20%7B%0Abackground%2Dcolor%3A%20%23f5f5f5%3B%0A%7D%0A%2Elightable%2Dmaterial%20%7B%0Amin%2Dwidth%3A%20100%25%3B%0Awhite%2Dspace%3A%20nowrap%3B%0Atable%2Dlayout%3A%20fixed%3B%0Afont%2Dfamily%3A%20Roboto%2C%20sans%2Dserif%3B%0Aborder%3A%201px%20solid%20%23EEE%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0Amargin%2Dbottom%3A%2010px%3B%0A%7D%0A%2Elightable%2Dmaterial%20tfoot%20tr%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dmaterial%20tfoot%20tr%3Afirst%2Dchild%20td%20%7B%0Aborder%2Dtop%3A%201px%20solid%20%23EEE%3B%0A%7D%0A%2Elightable%2Dmaterial%20th%20%7B%0Aheight%3A%2056px%3B%0Apadding%2Dleft%3A%2016px%3B%0Apadding%2Dright%3A%2016px%3B%0A%7D%0A%2Elightable%2Dmaterial%20td%20%7B%0Aheight%3A%2052px%3B%0Apadding%2Dleft%3A%2016px%3B%0Apadding%2Dright%3A%2016px%3B%0Aborder%2Dtop%3A%201px%20solid%20%23eeeeee%3B%0A%7D%0A%2Elightable%2Dmaterial%2Elightable%2Dhover%20tbody%20tr%3Ahover%20%7B%0Abackground%2Dcolor%3A%20%23f5f5f5%3B%0A%7D%0A%2Elightable%2Dmaterial%2Elightable%2Dstriped%20tbody%20tr%3Anth%2Dchild%28even%29%20%7B%0Abackground%2Dcolor%3A%20%23f5f5f5%3B%0A%7D%0A%2Elightable%2Dmaterial%2Elightable%2Dstriped%20tbody%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dmaterial%2Elightable%2Dstriped%20thead%20tr%3Alast%2Dchild%20th%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ddd%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%20%7B%0Amin%2Dwidth%3A%20100%25%3B%0Awhite%2Dspace%3A%20nowrap%3B%0Atable%2Dlayout%3A%20fixed%3B%0Afont%2Dfamily%3A%20Roboto%2C%20sans%2Dserif%3B%0Aborder%3A%201px%20solid%20%23FFFFFF12%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0Amargin%2Dbottom%3A%2010px%3B%0Abackground%2Dcolor%3A%20%23363640%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%20tfoot%20tr%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%20tfoot%20tr%3Afirst%2Dchild%20td%20%7B%0Aborder%2Dtop%3A%201px%20solid%20%23FFFFFF12%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%20th%20%7B%0Aheight%3A%2056px%3B%0Apadding%2Dleft%3A%2016px%3B%0Apadding%2Dright%3A%2016px%3B%0Acolor%3A%20%23FFFFFF60%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%20td%20%7B%0Aheight%3A%2052px%3B%0Apadding%2Dleft%3A%2016px%3B%0Apadding%2Dright%3A%2016px%3B%0Acolor%3A%20%23FFFFFF%3B%0Aborder%2Dtop%3A%201px%20solid%20%23FFFFFF12%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%2Elightable%2Dhover%20tbody%20tr%3Ahover%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF12%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%2Elightable%2Dstriped%20tbody%20tr%3Anth%2Dchild%28even%29%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF12%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%2Elightable%2Dstriped%20tbody%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dmaterial%2Ddark%2Elightable%2Dstriped%20thead%20tr%3Alast%2Dchild%20th%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23FFFFFF12%3B%0A%7D%0A%2Elightable%2Dpaper%20%7B%0Awidth%3A%20100%25%3B%0Amargin%2Dbottom%3A%2010px%3B%0Acolor%3A%20%23444%3B%0A%7D%0A%2Elightable%2Dpaper%20tfoot%20tr%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A%2Elightable%2Dpaper%20tfoot%20tr%3Afirst%2Dchild%20td%20%7B%0Aborder%2Dtop%3A%201px%20solid%20%2300000020%3B%0A%7D%0A%2Elightable%2Dpaper%20thead%20tr%3Alast%2Dchild%20th%20%7B%0Acolor%3A%20%23666%3B%0Avertical%2Dalign%3A%20bottom%3B%0Aborder%2Dbottom%3A%201px%20solid%20%2300000020%3B%0Aline%2Dheight%3A%201%2E15em%3B%0Apadding%3A%2010px%205px%3B%0A%7D%0A%2Elightable%2Dpaper%20td%20%7B%0Avertical%2Dalign%3A%20middle%3B%0Aborder%2Dbottom%3A%201px%20solid%20%2300000010%3B%0Aline%2Dheight%3A%201%2E15em%3B%0Apadding%3A%207px%205px%3B%0A%7D%0A%2Elightable%2Dpaper%2Elightable%2Dhover%20tbody%20tr%3Ahover%20%7B%0Abackground%2Dcolor%3A%20%23F9EEC1%3B%0A%7D%0A%2Elightable%2Dpaper%2Elightable%2Dstriped%20tbody%20tr%3Anth%2Dchild%28even%29%20%7B%0Abackground%2Dcolor%3A%20%2300000008%3B%0A%7D%0A%2Elightable%2Dpaper%2Elightable%2Dstriped%20tbody%20td%20%7B%0Aborder%3A%200%3B%0A%7D%0A" rel="stylesheet" />
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -160,11 +162,12 @@ a.sourceLine {
 <p>Well-behaved residuals. Residuals (i.e., prediction errors) aren’t correlated with predictor variables or each other, and residuals have constant variance across values of your predictor variables. Also, residual error terms aren’t correlated across regression equations. This could happen if, for example, some omitted variable causes both thirst and water drinking.</p>
 <div id="libraries" class="section level3">
 <h3>Libraries</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MBESS)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MBESS)</span></code></pre></div>
 </div>
 </div>
 <div id="data" class="section level2">
@@ -177,67 +180,147 @@ a.sourceLine {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">id</th>
-<th align="left">room_temp</th>
-<th align="left">thirst</th>
-<th align="left">consume</th>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+room_temp
+</th>
+<th style="text-align:left;">
+thirst
+</th>
+<th style="text-align:left;">
+consume
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">1</td>
-<td align="left">70</td>
-<td align="left">4</td>
-<td align="left">3</td>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+3
+</td>
 </tr>
-<tr class="even">
-<td align="left">2</td>
-<td align="left">71</td>
-<td align="left">4</td>
-<td align="left">3</td>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+71
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+3
+</td>
 </tr>
-<tr class="odd">
-<td align="left">3</td>
-<td align="left">69</td>
-<td align="left">1</td>
-<td align="left">3</td>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+69
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
 </tr>
-<tr class="even">
-<td align="left">4</td>
-<td align="left">70</td>
-<td align="left">1</td>
-<td align="left">3</td>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
 </tr>
-<tr class="odd">
-<td align="left">…</td>
-<td align="left">…</td>
-<td align="left">…</td>
-<td align="left">…</td>
+<tr>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
 </tr>
-<tr class="even">
-<td align="left">47</td>
-<td align="left">71</td>
-<td align="left">4</td>
-<td align="left">4</td>
+<tr>
+<td style="text-align:left;">
+47
+</td>
+<td style="text-align:left;">
+71
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+4
+</td>
 </tr>
-<tr class="odd">
-<td align="left">48</td>
-<td align="left">71</td>
-<td align="left">3</td>
-<td align="left">2</td>
+<tr>
+<td style="text-align:left;">
+48
+</td>
+<td style="text-align:left;">
+71
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+2
+</td>
 </tr>
-<tr class="even">
-<td align="left">49</td>
-<td align="left">72</td>
-<td align="left">4</td>
-<td align="left">5</td>
+<tr>
+<td style="text-align:left;">
+49
+</td>
+<td style="text-align:left;">
+72
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+5
+</td>
 </tr>
-<tr class="odd">
-<td align="left">50</td>
-<td align="left">70</td>
-<td align="left">2</td>
-<td align="left">2</td>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+2
+</td>
 </tr>
 </tbody>
 </table>
@@ -326,163 +409,382 @@ a.sourceLine {
 <h2>Print all model parameters</h2>
 <p>In the boot.ci.type argument, I ask for bia-corrected and accelerated confidence intervals.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parameterestimates</span>(fsem1, <span class="at">boot.ci.type =</span> <span class="st">&quot;bca.simple&quot;</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="dv">100</span>)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100; ">
 <table>
-<colgroup>
-<col width="8%" />
-<col width="2%" />
-<col width="8%" />
-<col width="5%" />
-<col width="8%" />
-<col width="8%" />
-<col width="7%" />
-<col width="8%" />
-<col width="9%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-</colgroup>
 <thead>
-<tr class="header">
-<th align="left">lhs</th>
-<th align="left">op</th>
-<th align="left">rhs</th>
-<th align="left">label</th>
-<th align="right">est</th>
-<th align="right">se</th>
-<th align="right">z</th>
-<th align="right">pvalue</th>
-<th align="right">ci.lower</th>
-<th align="right">ci.upper</th>
-<th align="right">std.lv</th>
-<th align="right">std.all</th>
-<th align="right">std.nox</th>
+<tr>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:left;">
+label
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+se
+</th>
+<th style="text-align:right;">
+z
+</th>
+<th style="text-align:right;">
+pvalue
+</th>
+<th style="text-align:right;">
+ci.lower
+</th>
+<th style="text-align:right;">
+ci.upper
+</th>
+<th style="text-align:right;">
+std.lv
+</th>
+<th style="text-align:right;">
+std.all
+</th>
+<th style="text-align:right;">
+std.nox
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">thirst</td>
-<td align="left">~</td>
-<td align="left">room_temp</td>
-<td align="left">a</td>
-<td align="right">0.3385926</td>
-<td align="right">0.1025390</td>
-<td align="right">3.302086</td>
-<td align="right">0.0009597</td>
-<td align="right">0.1281968</td>
-<td align="right">0.5320804</td>
-<td align="right">0.3385926</td>
-<td align="right">0.3708979</td>
-<td align="right">0.3294301</td>
+<tr>
+<td style="text-align:left;">
+thirst
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+room_temp
+</td>
+<td style="text-align:left;">
+a
+</td>
+<td style="text-align:right;">
+0.3385926
+</td>
+<td style="text-align:right;">
+0.1025390
+</td>
+<td style="text-align:right;">
+3.302086
+</td>
+<td style="text-align:right;">
+0.0009597
+</td>
+<td style="text-align:right;">
+0.1281968
+</td>
+<td style="text-align:right;">
+0.5320804
+</td>
+<td style="text-align:right;">
+0.3385926
+</td>
+<td style="text-align:right;">
+0.3708979
+</td>
+<td style="text-align:right;">
+0.3294301
+</td>
 </tr>
-<tr class="even">
-<td align="left">consume</td>
-<td align="left">~</td>
-<td align="left">thirst</td>
-<td align="left">b</td>
-<td align="right">0.4510391</td>
-<td align="right">0.1500549</td>
-<td align="right">3.005828</td>
-<td align="right">0.0026486</td>
-<td align="right">0.1559586</td>
-<td align="right">0.7500305</td>
-<td align="right">0.4510391</td>
-<td align="right">0.4126006</td>
-<td align="right">0.4126006</td>
+<tr>
+<td style="text-align:left;">
+consume
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+thirst
+</td>
+<td style="text-align:left;">
+b
+</td>
+<td style="text-align:right;">
+0.4510391
+</td>
+<td style="text-align:right;">
+0.1500549
+</td>
+<td style="text-align:right;">
+3.005828
+</td>
+<td style="text-align:right;">
+0.0026486
+</td>
+<td style="text-align:right;">
+0.1559586
+</td>
+<td style="text-align:right;">
+0.7500305
+</td>
+<td style="text-align:right;">
+0.4510391
+</td>
+<td style="text-align:right;">
+0.4126006
+</td>
+<td style="text-align:right;">
+0.4126006
+</td>
 </tr>
-<tr class="odd">
-<td align="left">consume</td>
-<td align="left">~</td>
-<td align="left">room_temp</td>
-<td align="left">cp</td>
-<td align="right">0.2076475</td>
-<td align="right">0.1302091</td>
-<td align="right">1.594724</td>
-<td align="right">0.1107740</td>
-<td align="right">-0.0614808</td>
-<td align="right">0.4546212</td>
-<td align="right">0.2076475</td>
-<td align="right">0.2080748</td>
-<td align="right">0.1848112</td>
+<tr>
+<td style="text-align:left;">
+consume
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+room_temp
+</td>
+<td style="text-align:left;">
+cp
+</td>
+<td style="text-align:right;">
+0.2076475
+</td>
+<td style="text-align:right;">
+0.1302091
+</td>
+<td style="text-align:right;">
+1.594724
+</td>
+<td style="text-align:right;">
+0.1107740
+</td>
+<td style="text-align:right;">
+-0.0614808
+</td>
+<td style="text-align:right;">
+0.4546212
+</td>
+<td style="text-align:right;">
+0.2076475
+</td>
+<td style="text-align:right;">
+0.2080748
+</td>
+<td style="text-align:right;">
+0.1848112
+</td>
 </tr>
-<tr class="even">
-<td align="left">thirst</td>
-<td align="left">~~</td>
-<td align="left">thirst</td>
-<td align="left"></td>
-<td align="right">0.9110761</td>
-<td align="right">0.1545946</td>
-<td align="right">5.893324</td>
-<td align="right">0.0000000</td>
-<td align="right">0.6591188</td>
-<td align="right">1.2720094</td>
-<td align="right">0.9110761</td>
-<td align="right">0.8624347</td>
-<td align="right">0.8624347</td>
+<tr>
+<td style="text-align:left;">
+thirst
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+thirst
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.9110761
+</td>
+<td style="text-align:right;">
+0.1545946
+</td>
+<td style="text-align:right;">
+5.893324
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.6591188
+</td>
+<td style="text-align:right;">
+1.2720094
+</td>
+<td style="text-align:right;">
+0.9110761
+</td>
+<td style="text-align:right;">
+0.8624347
+</td>
+<td style="text-align:right;">
+0.8624347
+</td>
 </tr>
-<tr class="odd">
-<td align="left">consume</td>
-<td align="left">~~</td>
-<td align="left">consume</td>
-<td align="left"></td>
-<td align="right">0.9124389</td>
-<td align="right">0.1583099</td>
-<td align="right">5.763623</td>
-<td align="right">0.0000000</td>
-<td align="right">0.6721261</td>
-<td align="right">1.3356376</td>
-<td align="right">0.9124389</td>
-<td align="right">0.7227811</td>
-<td align="right">0.7227811</td>
+<tr>
+<td style="text-align:left;">
+consume
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+consume
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.9124389
+</td>
+<td style="text-align:right;">
+0.1583099
+</td>
+<td style="text-align:right;">
+5.763623
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.6721261
+</td>
+<td style="text-align:right;">
+1.3356376
+</td>
+<td style="text-align:right;">
+0.9124389
+</td>
+<td style="text-align:right;">
+0.7227811
+</td>
+<td style="text-align:right;">
+0.7227811
+</td>
 </tr>
-<tr class="even">
-<td align="left">room_temp</td>
-<td align="left">~~</td>
-<td align="left">room_temp</td>
-<td align="left"></td>
-<td align="right">1.2676000</td>
-<td align="right">0.0000000</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">1.2676000</td>
-<td align="right">1.2676000</td>
-<td align="right">1.2676000</td>
-<td align="right">1.0000000</td>
-<td align="right">1.2676000</td>
+<tr>
+<td style="text-align:left;">
+room_temp
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+room_temp
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1.2676000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1.2676000
+</td>
+<td style="text-align:right;">
+1.2676000
+</td>
+<td style="text-align:right;">
+1.2676000
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+1.2676000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">ab</td>
-<td align="left">:=</td>
-<td align="left">a*b</td>
-<td align="left">ab</td>
-<td align="right">0.1527185</td>
-<td align="right">0.0652818</td>
-<td align="right">2.339374</td>
-<td align="right">0.0193161</td>
-<td align="right">0.0528694</td>
-<td align="right">0.3189825</td>
-<td align="right">0.1527185</td>
-<td align="right">0.1530327</td>
-<td align="right">0.1359231</td>
+<tr>
+<td style="text-align:left;">
+ab
+</td>
+<td style="text-align:left;">
+:=
+</td>
+<td style="text-align:left;">
+a*b
+</td>
+<td style="text-align:left;">
+ab
+</td>
+<td style="text-align:right;">
+0.1527185
+</td>
+<td style="text-align:right;">
+0.0652818
+</td>
+<td style="text-align:right;">
+2.339374
+</td>
+<td style="text-align:right;">
+0.0193161
+</td>
+<td style="text-align:right;">
+0.0528694
+</td>
+<td style="text-align:right;">
+0.3189825
+</td>
+<td style="text-align:right;">
+0.1527185
+</td>
+<td style="text-align:right;">
+0.1530327
+</td>
+<td style="text-align:right;">
+0.1359231
+</td>
 </tr>
-<tr class="even">
-<td align="left">total</td>
-<td align="left">:=</td>
-<td align="left">cp+ab</td>
-<td align="left">total</td>
-<td align="right">0.3603660</td>
-<td align="right">0.1153772</td>
-<td align="right">3.123373</td>
-<td align="right">0.0017879</td>
-<td align="right">0.1210848</td>
-<td align="right">0.5805953</td>
-<td align="right">0.3603660</td>
-<td align="right">0.3611075</td>
-<td align="right">0.3207343</td>
+<tr>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+:=
+</td>
+<td style="text-align:left;">
+cp+ab
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:right;">
+0.3603660
+</td>
+<td style="text-align:right;">
+0.1153772
+</td>
+<td style="text-align:right;">
+3.123373
+</td>
+<td style="text-align:right;">
+0.0017879
+</td>
+<td style="text-align:right;">
+0.1210848
+</td>
+<td style="text-align:right;">
+0.5805953
+</td>
+<td style="text-align:right;">
+0.3603660
+</td>
+<td style="text-align:right;">
+0.3611075
+</td>
+<td style="text-align:right;">
+0.3207343
+</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="interpretation" class="section level2">
 <h2>Interpretation</h2>

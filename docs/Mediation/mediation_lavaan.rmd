@@ -30,6 +30,7 @@ Well-behaved residuals. Residuals (i.e., prediction errors) aren't correlated wi
 
 ### Libraries
 ```{r, message = F, warning = F}
+library(kableExtra)
 library(tidyverse)
 library(knitr)
 library(lavaan)
@@ -121,7 +122,8 @@ In the boot.ci.type argument, I ask for bia-corrected and accelerated confidence
 
 ```{r}
 parameterestimates(fsem1, boot.ci.type = "bca.simple", standardized = TRUE) %>%
-  kable()
+  kable() %>%
+  scroll_box(width = 100)
 ```
 
 ## Interpretation
