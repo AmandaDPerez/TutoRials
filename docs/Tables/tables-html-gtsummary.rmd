@@ -1,7 +1,9 @@
 ---
 title: "Making HTML Tables with gtsummary"
 output:
-  html_document: default
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
 ---
 
 Using the [*gtsummary* package](https://education.rstudio.com/blog/2020/07/gtsummary/) to make various types of tables in r markdown.

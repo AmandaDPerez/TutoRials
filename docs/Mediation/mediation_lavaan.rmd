@@ -73,7 +73,7 @@ thirst_dat %>%
 
 *Figure 1. Room temperature is associated with water drinking indirectly through thirstiness*
 
-Write model to test indirect effect using sem() from lavaan
+Write model to test indirect effect using sem() from lavaan (LAtent VAriable ANalysis)
 
 * `~` = Regress onto …
 * Within the regression models, I label coefficients with the astrix.
@@ -153,6 +153,9 @@ thirst_dat %>%
 
 
 ### Sources
+
+http://www.stat.cmu.edu/~hseltman/PIER/SemAndLavaan.pdf
+
 https://nmmichalak.github.io/nicholas_michalak/blog_entries/2018/nrg01/nrg01.html
 
 MacKinnon, D. P. (2008). Introduction to statistical mediation analysis. New York, NY: Lawrence Erlbaum Associates.

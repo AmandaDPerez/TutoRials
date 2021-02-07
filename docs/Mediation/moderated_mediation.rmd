@@ -1,6 +1,9 @@
 ---
 title: "Moderated Mediation"
-output: html_document
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
 ---
 
 ```{r setup, include=FALSE}
