@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### What is mediation?
 
-There are many ways to define mediation and mediators. Here’s one way: Mediation is the process by which one variable transmits an effect onto another through one or more mediating variables. For example, as room temperature increases, people get thirstier, and then they drink more water. In this case, thirst transmits the effect of room temperature on water drinking.
+There are many ways to define mediation and mediators. Here's one way: Mediation is the process by which one variable transmits an effect onto another through one or more mediating variables. For example, as room temperature increases, people get thirstier, and then they drink more water. In this case, thirst transmits the effect of room temperature on water drinking.
 
 #### What is an indirect effect?
 The indirect effect quantifies a mediation effect, if such an effect exists. Referring to the thirst example above, in statistical terms, the indirect effect quantifies the extent to which room temperature is associated with water drinking indirectly through thirstiness. If you're familiar with interpreting regression coefficients and the idea of controlling for other variables, then you might find it intuitive to think of the indirect effect as the decrease in the relationship between room temperature and water drinking after you've partialed out the association between room temperature and thirstiness. In other words, how much does the coefficient for room temperature decrease when you control for thirstiness?
@@ -120,7 +120,7 @@ summary(fsem1, standardized = TRUE)
 In the boot.ci.type argument, I ask for bia-corrected and accelerated confidence intervals.
 
 ```{r}
-parameterestimates(fsem1, boot.ci.type = "bca.simple", standardized = TRUE) %>% 
+parameterestimates(fsem1, boot.ci.type = "bca.simple", standardized = TRUE) %>%
   kable()
 ```
 
@@ -145,8 +145,8 @@ The plot above depicts the relationship between the proposed mediator (thirstine
 
 ```{r, cache = T}
 thirst_dat %>%
-  mediate(y = "consume", x =  "room_temp", m = "thirst",  n.iter = 10000) %>% print(short = FALSE)
-
+  mediate(y = "consume", x = "room_temp", m = "thirst", n.iter = 10000) %>%
+  print(short = FALSE)
 ```
 
 
