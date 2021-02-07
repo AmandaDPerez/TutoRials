@@ -1,6 +1,9 @@
 ---
 title: "Mediation with Lavaan"
-output: html_document
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -14,16 +17,16 @@ knitr::opts_chunk$set(echo = TRUE)
 There are many ways to define mediation and mediators. Here’s one way: Mediation is the process by which one variable transmits an effect onto another through one or more mediating variables. For example, as room temperature increases, people get thirstier, and then they drink more water. In this case, thirst transmits the effect of room temperature on water drinking.
 
 #### What is an indirect effect?
-The indirect effect quantifies a mediation effect, if such an effect exists. Referring to the thirst example above, in statistical terms, the indirect effect quantifies the extent to which room temperature is associated with water drinking indirectly through thirstiness. If you’re familiar with interpreting regression coefficients and the idea of controlling for other variables, then you might find it intuitive to think of the indirect effect as the decrease in the relationship between room temperature and water drinking after you’ve partialed out the association between room temperature and thirtiness. In other words, how much does the coefficient for room temperature decrease when you control for thirstiness?
+The indirect effect quantifies a mediation effect, if such an effect exists. Referring to the thirst example above, in statistical terms, the indirect effect quantifies the extent to which room temperature is associated with water drinking indirectly through thirstiness. If you're familiar with interpreting regression coefficients and the idea of controlling for other variables, then you might find it intuitive to think of the indirect effect as the decrease in the relationship between room temperature and water drinking after you've partialed out the association between room temperature and thirstiness. In other words, how much does the coefficient for room temperature decrease when you control for thirstiness?
 
 ## Model and Conceptual Assumptions
-Correct functional form. Your model variables share linear relationships and don’t interact with eachother.
+Correct functional form. Your model variables share linear relationships and don't interact with each other.
 
 No omitted influences. This one is hard: Your model accounts for all relevant influences on the variables included. All models are wrong, but how wrong is yours?
 
-Accurate measurement. Your measurements are valid and reliable. Note that unreliable measures can’t be valid, and reliable measures don’t necessairly measure just one construct or even your construct.
+Accurate measurement. Your measurements are valid and reliable. Note that unreliable measures can't be valid, and reliable measures don't necessarily measure just one construct or even your construct.
 
-Well-behaved residuals. Residuals (i.e., prediction errors) aren’t correlated with predictor variables or eachother, and residuals have constant variance across values of your predictor variables. Also, residual error terms aren’t correlated across regression equations. This could happen if, for example, some omitted variable causes both thirst and water drinking.
+Well-behaved residuals. Residuals (i.e., prediction errors) aren't correlated with predictor variables or each other, and residuals have constant variance across values of your predictor variables. Also, residual error terms aren't correlated across regression equations. This could happen if, for example, some omitted variable causes both thirst and water drinking.
 
 ### Libraries
 ```{r, message = F, warning = F}
