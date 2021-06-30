@@ -1,0 +1,373 @@
+---
+title: "The Office: ggplot2 in Steps"
+autor: "Amanda D. Perez, PhD"
+output: 
+  html_document:
+    css: ["style.css"]
+    includes:
+      after_body: codehoverJavascript.txt
+editor_options: 
+  chunk_output_type: inline
+  toc:
+    depth: 2
+---
+
+
+```{r setup, include=FALSE}
+#https://bootswatch.com/ for themes .css
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+```{r, include=FALSE}
+office_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-17/office_ratings.csv')
+    
+library(tidyverse)
+library(ggbump)
+library(ggplot2)
+library(cowplot)
+library(magick)
+library(patchwork)
+library(htmltools)
+library(knitr)
+library(codehover)
+
+office_season <- office_ratings %>%
+  group_by(season) %>%
+  summarise(avg_rating = mean(imdb_rating, na.rm = T))
+
+# 1) Let´s create a folder for the images
+
+dir.create("./IMG/")
+
+# 2) Create images showing the steps of the code
+
+g <- ggplot2::ggplot(office_season, aes(x = season, y = avg_rating))
+
+ggplot2::ggsave("./IMG/1.png", width = 4, height = 3) 
+
+g <-  g + geom_point(size = 4, colour = "blue")
+ggplot2::ggsave("./IMG/2.png", width = 4, height = 3) 
+
+g <-  g +  geom_bump(colour = "blue")
+ggplot2::ggsave("./IMG/3.png", width = 4, height = 3) 
+
+g <-  g  + theme_classic() 
+ggplot2::ggsave("./IMG/4.png", width = 4, height = 3) 
+
+g <-  g +  scale_x_continuous(breaks = seq(0, 9, by = 1))
+ggplot2::ggsave("./IMG/5.png", width = 4, height = 3) 
+
+g <-  g +  annotate("text", x = 4, y = 8.7, label = "Season 4 was the highest rated", size = 2.5) 
+ggplot2::ggsave("./IMG/6.png", width = 4, height = 3) 
+
+g <-  g + annotate("text", x = 7.5, y = 7.55, label = "Season 8 was the lowest rated", size = 2.5) 
+ggplot2::ggsave("./IMG/7.png", width = 4, height = 3) 
+
+g <-  g + ylim(7.5,8.8)
+ggplot2::ggsave("./IMG/8.png", width = 4, height = 3) 
+
+g <-  g + labs(title="The Office: IMDB Ratings by Season", x ="Season", y = "Rating")
+ggplot2::ggsave("./IMG/9.png", width = 4, height = 3) 
+
+# 3) Create a hoveable table using **ch_int()**, **ch_row()**, and **ch_out()**.
+
+result <- ch_int(type = "incremental", div_tag_add = " class='column'") %>% 
+          ch_row(text = 
+                     "ggplot(office_season, aes(x = season, y = avg_rating)) + ",
+                   img ="./IMG/1.png") %>% 
+          ch_row(text = "geom_point(size = 4, colour = 'blue') + ",
+                   img ="./IMG/2.png") %>%   
+          ch_row(text = " geom_bump(colour = 'blue') + ",
+                   img ="./IMG/3.png") %>%   
+          ch_row(text = " theme_classic() + ",
+                   img ="./IMG/4.png") %>% 
+          ch_row(text = " scale_x_continuous(breaks = seq(0, 9, by = 1)) + ",
+                   img ="./IMG/5.png") %>%   
+          ch_row(text = " annotate('text', x = 4, y = 8.7, label = 'Season 4 was the highest rated')  + ",
+                   img ="./IMG/6.png") %>% 
+          ch_row(text = "annotate('text', x = 7.5, y = 7.55, label = 'Season 8 was the lowest rated') + ",
+                   img ="./IMG/7.png") %>%
+          ch_row(text = "ylim(7.5,8.8) +  ",
+                   img ="./IMG/8.png") %>%
+           ch_row(text = " labs(title='The Office: IMDB Ratings by Season', x ='Season', y = 'Rating')<br> ",
+                  img ="./IMG/9.png") %>%
+          ch_out(img = "./IMG/1.png", div_tag_add = " class='column'") 
+```
+
+
+## First, we load required packages
+
+```{r, warning=F, message=FALSE}
+library(tidyverse)
+library(ggbump)
+library(ggplot2)
+library(cowplot)
+library(magick)
+library(patchwork)
+library(htmltools)
+library(knitr)
+library(codehover)
+```
+
+## Next, we load in data and format it for plotting
+
+```{r, warning=F, message=FALSE}
+office_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-17/office_ratings.csv')
+
+office_season <- office_ratings %>%
+  group_by(season) %>%
+  summarise(avg_rating = mean(imdb_rating, na.rm = T))
+```
+
+## See the ggplot below. Hover over the code to see the graph being built step by step. 
+
+## This is a plot looking at how IMDB ratings of *The Office* vary by season.
+
+```{r, echo=FALSE}
+# 4) Call the table into the HTML with {htmltools}.
+htmltools::HTML(result)
+```
+
+# More Advanced ggplot
+
+## Formatting data for second visualization.
+
+```{r, warning = F, message = F}
+library(tidyverse)
+library(ggbump)
+library(ggplot2)
+library(cowplot)
+library(magick)
+library(patchwork)
+
+office_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-17/office_ratings.csv')
+
+office_season_ep <- office_ratings %>%
+  group_by(season, episode) %>%
+  summarise(avg_rating = mean(imdb_rating, na.rm = T))
+
+
+```
+
+
+```{r include=F}
+# https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-17/readme.md
+
+##ggbump https://github.com/MJaffee/R-Projects/blob/main/TidyTuesdays/W26/W26.R
+
+
+####
+ggplot(office_season_ep, aes(episode, avg_rating, color = as.factor(season), fill = as.factor(season))) +
+  geom_point(size = .5, show.legend = FALSE) +
+  geom_bump(size = .3, show.legend = FALSE) + facet_grid(~as.factor(season),scales = "free_x")+
+  scale_color_manual(values = c('#332288', '#88CCEE', '#44AA99', 
+                                '#117733', '#999933', '#DDCC77', 
+                                '#CC6677', '#882255', '#AA4499')) + geom_area(size = 1, alpha = 0.1, show.legend = FALSE, color = NA) + 
+  scale_fill_manual(values = c('#332288', '#88CCEE', '#44AA99', 
+                               '#117733', '#999933', '#DDCC77', 
+                               '#CC6677', '#882255', '#AA4499'))+scale_y_continuous(limits = c(0, 10)) + 
+  #scale_x_continuous(breaks = c(1,22)) +
+  theme(panel.background = element_rect(fill = '#232229', colour = '#232229')) +
+  theme(plot.background = element_rect(fill = '#232229', colour = '#232229')) +
+  theme(strip.background = element_rect(fill = '#232229', colour = '#232229')) +
+  theme(panel.grid.minor = element_line(colour = '#e5e5e5',
+                                    size = .10, linetype = "dotted")) +
+  theme(panel.grid.major = element_line(colour = '#e5e5e5', 
+                                    size = .10, linetype = "dotted")) +
+  theme(axis.title.x = element_text(size = 15, colour='#e5e5e5')) +
+  theme(axis.title.y = element_blank()) +
+  theme(axis.text.x = element_blank()) +
+  theme(axis.text.y = element_text(size = 12, colour='#e5e5e5')) +
+    theme(strip.text.x = element_text(face = 'italic', size = 15, colour='#e5e5e5')) +
+    theme(axis.ticks = element_blank()) + 
+  labs(
+    title = "The Office Episode ratings by season \n Season",
+    x = "Episode",
+    y = "IMDB Rating"
+  ) +  
+  plot_annotation(
+    caption = "#TidyTuesday | Data: The Office | Graphic: ADP"
+  ) +
+  theme(
+    panel.background  = element_rect(fill = '#232229', colour='#232229'),
+    plot.background   = element_rect(fill = '#232229', colour='#232229'),
+    strip.background  = element_rect(fill = '#232229', colour='#232229'),
+    plot.title = element_text(size=20, face="bold", hjust = 0,
+                              color = '#e5e5e5'),
+    plot.subtitle = element_text(size=15, hjust = 0, face='italic',
+                                 color = '#e5e5e5'),
+    plot.caption = element_text(size=10, face='italic', hjust = 0, 
+                                color = '#e5e5e5'))
+
+#ggsave("office.png", last_plot(), device = "png")
+
+```
+
+
+
+
+```{r, include=F, cache = T}
+# 1) Let´s create a folder for the images
+
+dir.create("./IMG2/")
+
+# 2) Create images showing the steps of the code
+
+g <- ggplot2::ggplot(office_season_ep, aes(episode, avg_rating, color = as.factor(season), fill = as.factor(season)))
+
+ggplot2::ggsave("./IMG2/1.png", width =6, height = 6) 
+
+g <-  g + geom_point(size = .25, show.legend = FALSE)
+ggplot2::ggsave("./IMG2/2.png", width =6, height = 6)
+
+g <-  g + geom_bump(size = .25, show.legend = FALSE)
+ggplot2::ggsave("./IMG2/3.png", width =6, height = 6)
+
+g <- g + facet_grid(~as.factor(season),scales = "free_x")
+ggplot2::ggsave("./IMG2/4.png", width =6, height = 6)
+
+g <-  g + scale_color_manual(values = c('#332288', '#88CCEE', '#44AA99', 
+                                '#117733', '#999933', '#DDCC77', 
+                                '#CC6677', '#882255', '#AA4499'))
+ggplot2::ggsave("./IMG2/5.png", width =6, height = 6)
+
+g <-  g + geom_area(size = 1, alpha = 0.1, show.legend = FALSE, color = NA) 
+ggplot2::ggsave("./IMG2/6.png", width =6, height = 6)
+
+g <-  g +   scale_fill_manual(values = c('#332288', '#88CCEE', '#44AA99', 
+                               '#117733', '#999933', '#DDCC77', 
+                               '#CC6677', '#882255', '#AA4499'))
+ggplot2::ggsave("./IMG2/7.png", width =6, height = 6)
+
+g <-  g + scale_y_continuous(limits = c(0, 10))
+ggplot2::ggsave("./IMG2/8.png", width =6, height = 6)
+
+g <-  g + theme(panel.background = element_rect(fill = '#232229', colour = '#232229'))
+ggplot2::ggsave("./IMG2/9.png", width =6, height = 6)
+
+g <-  g + theme(plot.background = element_rect(fill = '#232229', colour = '#232229'))
+ggplot2::ggsave("./IMG2/10.png", width =6, height = 6)
+
+g <-  g + theme(strip.background = element_rect(fill = '#232229', colour = '#232229'))
+ggplot2::ggsave("./IMG2/11.png", width =6, height = 6)
+
+g <-  g + theme(panel.grid.minor = element_line(colour = '#e5e5e5',
+                                    size = .10, linetype = "dotted"))
+ggplot2::ggsave("./IMG2/12.png", width =6, height = 6)
+
+g <-  g + theme(panel.grid.major = element_line(colour = '#e5e5e5', 
+                                    size = .10, linetype = "dotted"))
+ggplot2::ggsave("./IMG2/13.png", width =6, height = 6)
+
+g <-  g + theme(axis.title.x = element_text(size = 15, colour='#e5e5e5'))
+ggplot2::ggsave("./IMG2/14.png", width =6, height = 6)
+
+g <-  g + theme(axis.title.y = element_blank())
+ggplot2::ggsave("./IMG2/15.png", width =6, height = 6)
+
+g <-  g + theme(axis.text.x = element_blank())
+ggplot2::ggsave("./IMG2/16.png", width =6, height = 6)
+
+g <-  g + theme(axis.text.y = element_text(size = 12, colour='#e5e5e5'))
+ggplot2::ggsave("./IMG2/17.png", width =6, height = 6)
+
+g <-  g + theme(strip.text.x = element_text(face = 'italic', size = 15, colour='#e5e5e5'))
+ggplot2::ggsave("./IMG2/18.png", width =6, height = 6)
+
+g <-  g + theme(axis.ticks = element_blank())
+ggplot2::ggsave("./IMG2/19.png", width =6, height = 6)
+
+g <-  g +   labs(
+    title = "The Office: Episode ratings by season \n Season",
+    x = "Episode",
+    y = "IMDB Rating"
+  )
+ggplot2::ggsave("./IMG2/20.png", width =6, height = 6)
+
+g <-  g + plot_annotation(caption = "#TidyTuesday | Data: The Office | Graphic: ADPerez")
+ggplot2::ggsave("./IMG2/21.png", width =6, height = 6)
+
+g <-  g + theme(panel.background  = element_rect(fill = '#232229', colour='#232229'))
+ggplot2::ggsave("./IMG2/22.png", width =6, height = 6)
+
+g <-  g + theme(plot.background   = element_rect(fill = '#232229', colour='#232229'))
+ggplot2::ggsave("./IMG2/23.png", width =6, height = 6)
+
+g <-  g + theme(strip.background  = element_rect(fill = '#232229', colour='#232229'))
+ggplot2::ggsave("./IMG2/24.png", width =6, height = 6)
+
+g <-  g + theme(plot.title = element_text(size=20, face="bold", hjust = 0,color = '#e5e5e5'))
+ggplot2::ggsave("./IMG2/25.png", width =6, height = 6)
+
+g <-  g + theme(plot.subtitle = element_text(size=15, hjust = 0, face='italic', color = '#e5e5e5'))
+ggplot2::ggsave("./IMG2/26.png", width =6, height = 6)
+
+g <-  g + theme(plot.caption = element_text(size=10, face='italic', hjust = 0, color = '#e5e5e5'))
+ggplot2::ggsave("./IMG2/27.png", width =6, height = 6)
+
+result2 <- ch_int(type = "incremental", div_tag_add = " class='column'") %>% 
+          ch_row(text = 
+                     "ggplot(office_season, aes(x = season, y = avg_rating)) + ",
+                   img ="./IMG2/1.png") %>%
+          ch_row(text = "geom_point(size = .25, show.legend = FALSE) + ",
+                   img ="./IMG2/2.png") %>%
+          ch_row(text = "geom_bump(size = .25, show.legend = FALSE) + ",
+                   img ="./IMG2/3.png") %>% 
+          ch_row(text = "facet_grid(~as.factor(season),scales = 'free_x') + ",
+                   img ="./IMG2/4.png") %>% 
+          ch_row(text = "scale_color_manual(values = c('#332288', '#88CCEE', '#44AA99',<br> 
+                              <tab1>  '#117733', '#999933', '#DDCC77', <br>
+                              <tab1>  '#CC6677', '#882255', '#AA4499'))  + ",
+                   img ="./IMG2/5.png") %>% 
+          ch_row(text = "geom_area(size = 1, alpha = 0.1, show.legend = FALSE, color = NA)  + ",
+                   img ="./IMG2/6.png") %>% 
+          ch_row(text = "scale_fill_manual(values = c('#332288', '#88CCEE', '#44AA99', <br>
+                            <tab1>   '#117733', '#999933', '#DDCC77', <br>
+                              <tab1> '#CC6677', '#882255', '#AA4499')) + ",
+                   img ="./IMG2/7.png") %>% 
+          ch_row(text = "scale_y_continuous(limits = c(0, 10)) + ",
+                   img ="./IMG2/8.png") %>% 
+          ch_row(text = "theme(panel.background = element_rect(fill = '#232229', colour = '#232229')) + ",
+                   img ="./IMG2/9.png") %>% 
+          ch_row(text = "theme(plot.background = element_rect(fill = '#232229', colour = '#232229')) + ",
+                   img ="./IMG2/10.png") %>% 
+          ch_row(text = "theme(strip.background = element_rect(fill = '#232229', colour = '#232229')) + ",
+                   img ="./IMG2/11.png") %>% 
+          ch_row(text = "theme(panel.grid.minor = element_line(colour = '#e5e5e5', <br> size = .10, linetype = 'dotted')) + ",
+                   img ="./IMG2/12.png") %>% 
+          ch_row(text = "theme(panel.grid.major = element_line(colour = '#e5e5e5', <br> 
+                 size = .10, linetype = 'dotted')) + ",
+                   img ="./IMG2/13.png") %>% 
+          ch_row(text = "theme(axis.title.x = element_text(size = 15, colour='#e5e5e5'))) + ",
+                   img ="./IMG2/14.png") %>% 
+          ch_row(text = "theme(axis.title.y = element_blank()) + ",
+                   img ="./IMG2/15.png") %>%  
+                ch_row(text = "theme(axis.text.x = element_blank()) + ",
+                   img ="./IMG2/16.png") %>%
+              ch_row(text = "theme(axis.text.y = element_text(size = 12, colour='#e5e5e5')) + ",
+                   img ="./IMG2/17.png") %>%
+            ch_row(text = "theme(strip.text.x = element_text(face = 'italic', size = 15, colour='#e5e5e5')) + ",
+                   img ="./IMG2/18.png") %>%
+          ch_row(text = "theme(axis.ticks = element_blank()) + ",
+                   img ="./IMG2/19.png") %>%
+        ch_row(text = "labs(title = 'The Office: Episode ratings by season \n Season', x = 'Episode', y = 'IMDB Rating') + ",
+                   img ="./IMG2/20.png") %>%
+      ch_row(text = "plot_annotation(caption = '#TidyTuesday | Data: The Office | Graphic: ADPerez') + ",
+                   img ="./IMG2/21.png") %>%
+          ch_row(text = "theme(plot.title = element_text(size=20, face='bold', hjust = 0,color = '#e5e5e5')) ",
+                   img ="./IMG2/25.png") %>%  
+          ch_out(img = "./IMG2/1.png", div_tag_add = " class='column'") 
+
+```
+
+
+```{r, echo=FALSE}
+# 4) Call the table into the HTML with {htmltools}.
+htmltools::HTML(result2)
+```
+
+
+
+
