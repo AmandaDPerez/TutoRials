@@ -98,7 +98,8 @@ These books are from the bookshelf of J. H. Maindonald at Australian National Un
 ```r
 linear_reg() %&gt;%
   set_engine("lm") %&gt;%
-  fit(weight ~ volume, data = allbacks) %&gt;%
+  fit(weight ~ volume, 
+      data = allbacks) %&gt;%
   tidy()
 ```
 

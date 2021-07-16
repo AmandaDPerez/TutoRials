@@ -4,7 +4,7 @@ subtitle: "<br><br>Psych 101"
 author: "Amanda D. Perez, PhD"
 output:
   xaringan::moon_reader:
-    css: ["../xaringan-themer.css", "../slides.css"]
+    css: ["https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/xaringan-themer.css", "https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/slides.css"]
     lib_dir: libs
     nature:
       ratio: "16:9"
@@ -71,7 +71,8 @@ These books are from the bookshelf of J. H. Maindonald at Australian National Un
 ```{r}
 linear_reg() %>%
   set_engine("lm") %>%
-  fit(weight ~ volume, data = allbacks) %>%
+  fit(weight ~ volume, 
+      data = allbacks) %>%
   tidy()
 ```
 ]
@@ -110,7 +111,8 @@ ggplot(allbacks, aes(x = volume, y = weight, color = cover, shape = cover)) +
 ```{r echo=FALSE}
 linear_reg() %>%
   set_engine("lm") %>%
-  fit(weight ~ volume + cover, data = allbacks) %>%
+  fit(weight ~ volume + cover, 
+      data = allbacks) %>%
   tidy()
 ```
 
