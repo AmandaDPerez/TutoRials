@@ -4,7 +4,7 @@ subtitle: "<br><br>Psych 101"
 author: "Amanda D. Perez, PhD"
 output:
   xaringan::moon_reader:
-    css: ["../xaringan-themer.css", "../slides.css"]
+    css: ["https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/xaringan-themer.css", "https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/slides.css"]
     lib_dir: libs
     nature:
       ratio: "16:9"
