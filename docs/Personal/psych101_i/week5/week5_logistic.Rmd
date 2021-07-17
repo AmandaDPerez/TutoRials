@@ -4,7 +4,7 @@ subtitle: "<br><br>Psych 101"
 author: "Amanda D. Perez, PhD"
 output:
   xaringan::moon_reader:
-    css: ["../xaringan-themer.css", "../slides.css"]
+    css: ["https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/xaringan-themer.css", "https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/slides.css"]
     lib_dir: libs
     nature:
       ratio: "16:9"
@@ -251,18 +251,13 @@ $$p_i = \frac{\exp(\beta_0+\beta_1 x_{1,i} + \cdots + \beta_k x_{k,i})}{1+\exp(\
 
 In R we fit a GLM in the same way as a linear model except we
 
-- specify the model with `logistic_reg()`
 - use `"glm"` instead of `"lm"` as the engine 
 - define `family = "binomial"` for the link function to be used in the model
 
 --
 
 ```{r,  warning = F, message = F}
-spam_fit <- logistic_reg() %>%
-  set_engine("glm") %>%
-  fit(spam ~ num_char, data = email, family = "binomial")
-
-tidy(spam_fit)
+spam_fit <-  glm( spam ~ num_char, data = email, family = binomial)
 ```
 
 ---
@@ -292,6 +287,30 @@ $$p = 0.15 / 1.15 = 0.13$$
 
 ---
 
+```{r}
+test.values <- data.frame(num_char = c(2))
+spam_fit %>% predict(test.values, type = "response") %>%
+  round(2)
+
+```
+
+---
+
+.question[
+What is the probability that an email with 15000 characters is spam? What about an email with 40000 characters?
+]
+
+--
+
+```{r}
+test.values <- data.frame(num_char = c(15, 40))
+spam_fit %>% predict(test.values, type = "response") %>%
+  round(2)
+
+```
+
+---
+
 .question[
 What is the probability that an email with 15000 characters is spam? What about an email with 40000 characters?
 ]
@@ -305,6 +324,9 @@ newdata <- tibble(
   color    = c("#A7D5E8", "#e9d968", "#8fada7"),
   shape    = c(22, 24, 23)
   )
+spam_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(spam ~ num_char, data = email, family = "binomial")
 
 y_hat <- predict(spam_fit, newdata, type = "raw")
 p_hat <- exp(y_hat) / (1 + exp(y_hat))
@@ -349,45 +371,4 @@ Would you prefer an email with 2000 characters to be labelled as spam or not? Ho
 ```{r ref.label="spam-predict-viz", echo=FALSE, fig.asp=0.5,  warning = F, message = F}
 ```
 
----
 
-class: middle
-
-# Sensitivity and specificity
-
----
-
-## False positive and negative
-
-|                         | Email is spam                 | Email is not spam             |
-|-------------------------|-------------------------------|-------------------------------|
-| Email labelled spam     | True positive                 | False positive (Type 1 error) |
-| Email labelled not spam | False negative (Type 2 error) | True negative                 |
-
---
-- False negative rate = P(Labelled not spam | Email spam) = FN / (TP + FN) 
-
-- False positive rate = P(Labelled spam | Email not spam) = FP / (FP + TN)
-
----
-
-## Sensitivity and specificity
-
-|                         | Email is spam                 | Email is not spam             |
-|-------------------------|-------------------------------|-------------------------------|
-| Email labelled spam     | True positive                 | False positive (Type 1 error) |
-| Email labelled not spam | False negative (Type 2 error) | True negative                 |
-
---
-
-- Sensitivity = P(Labelled spam | Email spam) = TP / (TP + FN)
-  - Sensitivity = 1 − False negative rate
-  
-- Specificity = P(Labelled not spam | Email not spam) = TN / (FP + TN) 
-  - Specificity = 1 − False positive rate
-
----
-
-.question[
-If you were designing a spam filter, would you want sensitivity and specificity to be high or low? What are the trade-offs associated with each decision? 
-]

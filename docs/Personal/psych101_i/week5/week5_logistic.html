@@ -13,8 +13,8 @@
     <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-scribble/scribble.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
-    <link rel="stylesheet" href="/Users/Amanda/Dropbox/PSYCH101SU21/xaringan-themer.css" type="text/css" />
-    <link rel="stylesheet" href="/Users/Amanda/Dropbox/PSYCH101SU21/slides.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/slides.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -245,7 +245,6 @@ class: middle
 
 In R we fit a GLM in the same way as a linear model except we
 
-- specify the model with `logistic_reg()`
 - use `"glm"` instead of `"lm"` as the engine 
 - define `family = "binomial"` for the link function to be used in the model
 
@@ -253,19 +252,7 @@ In R we fit a GLM in the same way as a linear model except we
 
 
 ```r
-spam_fit &lt;- logistic_reg() %&gt;%
-  set_engine("glm") %&gt;%
-  fit(spam ~ num_char, data = email, family = "binomial")
-
-tidy(spam_fit)
-```
-
-```
-## # A tibble: 2 x 5
-##   term        estimate std.error statistic   p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)  -1.80     0.0716     -25.1  2.04e-139
-## 2 num_char     -0.0621   0.00801     -7.75 9.50e- 15
+spam_fit &lt;-  glm( spam ~ num_char, data = email, family = binomial)
 ```
 
 ---
@@ -304,6 +291,40 @@ Model:
 
 ---
 
+
+```r
+test.values &lt;- data.frame(num_char = c(2))
+spam_fit %&gt;% predict(test.values, type = "response") %&gt;%
+  round(2)
+```
+
+```
+##    1 
+## 0.13
+```
+
+---
+
+.question[
+What is the probability that an email with 15000 characters is spam? What about an email with 40000 characters?
+]
+
+--
+
+
+```r
+test.values &lt;- data.frame(num_char = c(15, 40))
+spam_fit %&gt;% predict(test.values, type = "response") %&gt;%
+  round(2)
+```
+
+```
+##    1    2 
+## 0.06 0.01
+```
+
+---
+
 .question[
 What is the probability that an email with 15000 characters is spam? What about an email with 40000 characters?
 ]
@@ -325,50 +346,9 @@ What is the probability that an email with 15000 characters is spam? What about 
 Would you prefer an email with 2000 characters to be labelled as spam or not? How about 40,000 characters?
 ]
 
-&lt;img src="week5_logistic_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="week5_logistic_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
----
 
-class: middle
-
-# Sensitivity and specificity
-
----
-
-## False positive and negative
-
-|                         | Email is spam                 | Email is not spam             |
-|-------------------------|-------------------------------|-------------------------------|
-| Email labelled spam     | True positive                 | False positive (Type 1 error) |
-| Email labelled not spam | False negative (Type 2 error) | True negative                 |
-
---
-- False negative rate = P(Labelled not spam | Email spam) = FN / (TP + FN) 
-
-- False positive rate = P(Labelled spam | Email not spam) = FP / (FP + TN)
-
----
-
-## Sensitivity and specificity
-
-|                         | Email is spam                 | Email is not spam             |
-|-------------------------|-------------------------------|-------------------------------|
-| Email labelled spam     | True positive                 | False positive (Type 1 error) |
-| Email labelled not spam | False negative (Type 2 error) | True negative                 |
-
---
-
-- Sensitivity = P(Labelled spam | Email spam) = TP / (TP + FN)
-  - Sensitivity = 1 − False negative rate
-  
-- Specificity = P(Labelled not spam | Email not spam) = TN / (FP + TN) 
-  - Specificity = 1 − False positive rate
-
----
-
-.question[
-If you were designing a spam filter, would you want sensitivity and specificity to be high or low? What are the trade-offs associated with each decision? 
-]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
