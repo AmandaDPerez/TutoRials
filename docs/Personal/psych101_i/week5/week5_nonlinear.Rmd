@@ -4,13 +4,14 @@ subtitle: "<br><br>Psych 101"
 author: "Amanda D. Perez, PhD"
 output:
   xaringan::moon_reader:
-    css: ["../xaringan-themer.css", "../slides.css"]
+    css: ["https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/xaringan-themer.css", "https://amandadperez.github.io/TutoRials/docs/Personal/psych101_i/slides.css"]
     lib_dir: libs
     nature:
       ratio: "16:9"
       highlightLines: true
       countIncrementalSlides: false
 ---
+
 
 
 ```{r child = "setup.Rmd"}
@@ -414,14 +415,6 @@ $$ \widehat{log(price)} = 4.67 + 0.0192 Width $$
 
 The slope coefficient for the log transformed model is 0.0192, meaning the log price difference between paintings whose widths are one inch apart is predicted to be 0.0192 log livres.
 
---
-
-.question[
-Using this information, and properties of logs that we just reviewed, fill in the blanks in the following alternate interpretation of the slope:
-
->For each additional inch the painting is wider, the price of the painting is expected to be `___` , on average, by a factor of `___`.
-]
-
 
 ---
 
@@ -442,9 +435,13 @@ $$ e^{log\left(\frac{\text{price for width x+1}}{\text{price for width x}}\right
 
 $$ \frac{\text{price for width x+1}}{\text{price for width x}} \approx 1.02 $$
 
---
+---
 
 For each additional inch the painting is wider, the price of the painting is expected to be higher, on average, by a factor of 1.02.
+
+```{r}
+exp(0.0192)
+```
 
 ---
 
