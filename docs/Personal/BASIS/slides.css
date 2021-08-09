@@ -217,8 +217,8 @@ div.my-footer img {
 }
 
 .question{
-  border-left: solid 5px var(--green);
-  background-color: var(--green-faint);
+  border-left: solid 5px var(--green-faint);
+  background-color: var(--green);
 }
 
 .tip {
