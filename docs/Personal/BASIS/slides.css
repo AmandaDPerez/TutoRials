@@ -222,12 +222,12 @@ div.my-footer img {
 }
 
 .tip {
-  border-left: solid 5px var(--pink);
-  background-color: var(--pink-faint);
+  border-left: solid 5px var(--pink-faint);
+  background-color: var(--pink);
 }
 
 .your-turn {
-  border-left: solid 5px var(--light-blue);
+  border-left: solid 5px var(--dark-blue);
 }
 
 
