@@ -190,8 +190,8 @@ Draw a matrix for systematically comparing outcomes.
 
 |Outcome| Hypothesized Group: Wearing Tape| Comparison Group: No Tape |
 |------|------|------|
-|Feel Better| x | x |
-|Feel Worse| x | x |
+|Feel Better| **Area of Focus** | X |
+|Feel Worse| X | X |
 
 ---
 
