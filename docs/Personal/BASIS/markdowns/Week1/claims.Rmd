@@ -1,0 +1,393 @@
+---
+title: "Interrogating Claims"
+subtitle: "<br><br> Psych 101x"
+author: "Amanda D. Perez, PhD"
+output:
+  xaringan::moon_reader:
+    css: ["https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css", "https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css"]
+    lib_dir: libs
+    nature:
+      ratio: "16:9"
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r child = "setup.Rmd"}
+```
+
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(emo)
+xaringanExtra::use_scribble()
+# highlightStyle: solarized-dark
+
+library(viridis)
+library(sugrrants)
+library(lubridate)
+```
+
+## The Four Big Validities
+
+Construct Validity
+
+External Validity
+
+Statistical Validity
+
+Internal Validity
+
+---
+
+## Construct Validity: 
+
+How well the variables in a study are measured or manipulated
+
+The extent to which the operational variables in a study are a good approximation of the conceptual variables
+
+---
+
+## External Validity: 
+
+The extent to which the results of a study generalize to some larger population (e.g., whether the results from this sample of children apply to all U.S. school children), as well as to other times or situations (e.g., whether the results based on this type of music apply to other types of music)
+
+--
+
+**Does being around babies make people happier?**
+
+Bring people into a lab & show a picture of a baby VS a more naturalistic setting (park?) with real babies
+
+---
+
+## Statistical Validity: 
+
+The extent to which the data supports to conclusion
+
+Among other questions, it is important to ask about the strength of an association and its statistical significant (the probability that the results could have been obtained by chance if there really is no relationship)
+
+---
+
+## Internal Validity: 
+
+How well an experiment is done
+
+Whether it avoids confounds
+
+The less chance for confounding variables in a study, the higher its internal validity is
+
+--
+
+*Do babies make people happier?*
+
+IF we find babies make people happier, what about the confound of being a parent or not?
+
+A highly internally valid study will control for that by asking about parent status
+
+---
+
+## Interrogating Frequency Claims
+
+**Frequency claims are claims that look at only one variable**
+
+--
+
+80% of college students have been **depressed** during the last year.
+
+--
+
+**For Construct Validity Ask:** How was **depression** operationally defined?
+
+--
+
+**For External Validity Ask:** Who/what did they study and in what context? Will the findings generalize beyond the study?
+
+---
+
+## Interrogating Association Claims
+
+**Association claims are claims that look two or more variable**
+
+--
+
+**People who multitask are the worst at it.**
+
+--
+
+**For Construct Validity Ask:** How were the **frequency** and **ability** to multitask measured? 
+
+--
+
+**For External Validity Ask:** Whether the results from this study's participants, 194 California college students, would generalize to other people and settings. 
+
+---
+
+## Interrogating Association Claims
+
+**Statistical Validity:** When referring to an association claim, statistical validity is the extent to which the statistical conclusions are accurate and reasonable. 
+
+--
+
+Aspects of statistical validity to consider: 
+
+**Strength:** How strong is the association? 
+
+Some associations are strong and others are weak. Remember that the stronger the association, the more accurate our predictions will be.
+
+--
+
+Avoiding two mistaken conclusions: When interrogating the statistical validity of an association claim, there are two kinds of mistakes that can be made. Type I error & Type II error
+
+---
+
+## Type 1 Error
+
+**False positive:** a study might mistakenly conclude that there is an association between two variables in their sample when there actually is no association in the population. 
+
+*You want to increase the chances that you will find an association only when there really is an association.*
+
+---
+
+## Type 2 Error
+
+**False negative:** a “miss”; a study might mistakenly conclude from a sample that there is no association between two variables when there actually is an association in the population. 
+
+*You want to minimize, or at least reduce, the chances of missing associations that are really there.*  
+
+---
+
+## Type 1 & 2 Errors
+
+```{r echo=FALSE}
+knitr::include_graphics("img/type.png")
+```
+
+---
+
+## Interrogating Causal Claims
+
+Because causal claims state that one variable causes another variable, they use directional verbs like leads to, affects, and influences. 
+
+--
+
+**Three criteria for causation:** 
+
+Covariance
+
+Temporal precedence
+
+Internal Validity
+
+---
+
+## Covariance
+
+This simply means that the two variables are related. Association claims fulfill this criterion. 
+
+Ex. The study's results show that as A changes, B changes. Positive association OR Negative association
+
+---
+
+## Temporal precedence
+
+One variable comes before the other variable in time.
+
+Because the researcher is manipulating one variable and then measuring the other variable, they know the manipulated variable comes before the outcome variable, which is measured after the manipulation. 
+
+Ex. The study’s method ensures that A comes first in time, before B. A $\rightarrow$ B
+
+---
+
+## Internal validity 
+
+Also known as the third-variable criterion.
+
+A study should be able to eliminate alternative explanation (confounds). 
+In other words, Variable A is the only thing that changed. The study's method ensures that there are no plausible alternative explanations for the change in B, A is the only thing that changed.
+
+---
+
+## Experiments Can Support Causal Claims
+
+In order to support a causal claim, a researcher needs to conduct an experiment in which one variable is manipulated and the other is measured.
+
+Independent Variable(s) (Manipulated)
+Dependent Variable (only one! Measured)
+Random Assignment
+
+---
+
+## Experiments Can Support Causal Claims
+
+**Independent Variable:** manipulated variable (cause) in an experiment (e.g., type of lessons; four levels: keyboard, voice, drama, no lessons).  
+
+**Dependent variable:** measured variable (effect) in an experiment (e.g., IQ)
+
+**Type of lesson (IV) $\rightarrow$ IQ increase (DV)**
+
+---
+
+## Experiments Can Support Causal Claims
+
+**Random assignment:** A method of assigning participants to levels of the independent variable such that each group is as similar as possible; flipping a coin or rolling a die; increases internal validity by controlling for potential alternative explanations. 
+
+Ex: We know that it was the lessons that caused the differences in IQ and not something else because IQ was similar in the four groups due to random assignment.  
+
+---
+
+## Prioritizing Validities
+
+**Which of the four validities is the most important?**
+
+It depends on what kind of claim the researcher is making and the researcher's priorities.
+
+It's impossible to find a study that satisfies all four validities at once. Researchers must decide on their priorities according to the goals of the study. 
+
+--
+
+Ex: Internal validity is typically a top priority when making causal claims but not when making frequency or association claims. 
+
+---
+
+## IDENTIFYING GOOD MEASUREMENT
+
+---
+
+## Ways to Measure Variables
+
+**First Important Decision:** how a variable should be operationalized
+
+Any variable can be expressed in two ways: as a **conceptual variable** (aka construct or theoretical level) and as an **operational variable** (how the variable will be measured or manipulated). 
+
+--
+
+**Example: Ed Diener & Happiness**
+
+Started by creating a conceptual definition of happiness: “subjective well-being” (a person’s own perception of his or her well-being). 
+
+Then Diener came up with an **operational definition** by asking participants to respond to 5 items about their life satisfaction on a 7-point scale with 1 = “strongly disagree” and 7 = “strongly agree.” 
+
+---
+
+## Three Common Types of Measures
+
+**Self-report measure:** Recording people's answers to questions about themselves in a questionnaire or interview; for example, operationalizing caffeine consumption by asking, *“How many caffeinated beverages have you consumed today?”*
+
+--
+
+**Observational measure:** (aka behavioral measures) Recording observable behaviors; for example, operationalizing allergies by *observing how often someone sneezes*
+
+--
+
+**Physiological measure:** Recording biological data (e.g., brain activity, hormonal levels, heart rate); for example, operationalizing whether someone can distinguish between two different speech sounds by *examining his or her brain responses to those speech sounds*
+
+---
+
+## Which is Best?
+
+A single construct can be operationalized in all three ways
+
+One way is not necessarily better than another
+
+It's preferable that the three types of measures show similar patterns of results
+
+---
+
+## Scales of Measurement
+
+All variables must have at least two levels to allow for change (so they can vary)
+
+The levels of operational variables can be coded using different scales of measurement:
+
+--
+
+**Categorical Variables:** Their levels are qualitatively distinct categories. Also referred to as nominal variables.
+
+For example: species (rhesus macaque, bonobo, chimpanzee), Food (Veg, Fruit, Other), Prof’s UCB Classes (PSYCH 101, PSYCH 102)
+
+--
+
+**Quantitative Variables:** Variables coded with meaningful numbers 
+for example, height, weight, or scale of subjective well-being.
+
+There are three types of quantitative variables: **Ordinal scale, Interval scale, Ratio scale**
+
+---
+
+## Quantitative Variables
+
+**Ordinal:** Ranked order. 
+
+Ex: first, second, third places in a race
+First place isn't twice as fast as second place
+
+--
+
+**Interval:** Numerals represent equal distances between levels and there is no true zero (zero does not mean “nothing”). 
+
+For example, IQ score (a score of 160 is twice as large as a score of 80). 
+
+Diener’s 1-7 scale, 0 = NOT MEANINGFUL
+
+--
+
+**Ratio:** Numerals represent equal intervals and there is a true zero
+
+For example, height or exam scores
+
+---
+
+## Reliability
+
+How **consistent** the results of a measure are
+
+Three types: test-retest, inter-rater, internal
+
+---
+
+## Test/ReTest
+
+Consistent scores every time the measure is used
+
+For example, give an IQ test at Time 1 (T1), at the beginning of the semester, and again at Time 2 (T2), at the end of the semester. The scores should be relatively consistent across the two times.
+
+Reliable at 2 time points
+
+---
+
+## Interrater
+
+Consistent scores no matter who does the measuring
+
+For example, two observers measure how often a child smiles during one hour at a daycare playground, and their counts are consistent with one another
+
+---
+
+## Internal
+
+Internal consistency. A participant provides a consistent pattern of responses, regardless of how the researcher has phrased the question
+
+For example, a researcher asks in several different ways about how lonely you feel, and your responses are consistent with one another
+
+---
+
+## Reliability ≠ Validity
+
+Reliability is not the same as validity
+
+**Reliability is possible without validity**
+
+Ex: head circumference as an operationalization for intelligence. Head circumference is a reliable measure, but it is not a valid measure of intelligence
+
+**Validity is NOT POSSIBLE without Reliability**
+
+If findings are not consistent, you are not measuring what you are intending to measure
+
+--
+
+Remember that just because a measure is reliable (e.g., head circumference) doesn’t mean it’s a valid measure of IQ
+Reliability: How well a measure correlates with itself
+Validity:  How well a measure is associated with something else. **If a measure doesn’t even correlate (reliability) with itself, then how can it be correlated with other variables? **
+
+
+
