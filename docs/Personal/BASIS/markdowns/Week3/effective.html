@@ -439,12 +439,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-20-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -455,12 +449,7 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1) +
-* guides(fill = FALSE)
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
+* guides(fill = "none")
 ```
 ]
 
@@ -473,12 +462,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-21-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -489,16 +472,11 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1) +
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(
 *   title = "Was Britain right/wrong to vote to leave EU?",
     x = NULL, y = NULL
   )
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
@@ -511,12 +489,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-22-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -527,18 +499,13 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1) +
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(
     title = "Was Britain right/wrong to vote to leave EU?",
 *   subtitle = "YouGov Survey Results, 2-3 September 2019",
 *   caption = "Source: https://d25d2506sfb94s.cloudfront.net/cumulus_uploads/document/x0msmggx08/YouGov%20-%20Brexit%20and%202019%20election.pdf",
     x = NULL, y = NULL
   )
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
@@ -551,12 +518,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-23-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -567,18 +528,13 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1) +
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(
     title = "Was Britain right/wrong to vote to leave EU?",
     subtitle = "YouGov Survey Results, 2-3 September 2019",
 *   caption = "Source: bit.ly/2lCJZVg",
     x = NULL, y = NULL
   )
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
@@ -591,12 +547,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-24-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -610,18 +560,13 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
     nrow = 1,
 *   labeller = label_wrap_gen(width = 12)
   ) + 
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(
     title = "Was Britain right/wrong to vote to leave EU?",
     subtitle = "YouGov Survey Results, 2-3 September 2019",
     caption = "Source: bit.ly/2lCJZVg",
     x = NULL, y = NULL
   )
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
@@ -637,12 +582,6 @@ class: middle
 
 ## Rainbow colors not always the right choice
 
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-25-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -652,12 +591,6 @@ class: middle
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-26-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -668,7 +601,7 @@ class: middle
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1, labeller = label_wrap_gen(width = 12)) +
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(title = "Was Britain right/wrong to vote to leave EU?",
        subtitle = "YouGov Survey Results, 2-3 September 2019",
        caption = "Source: bit.ly/2lCJZVg",
@@ -678,11 +611,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 *   "Right" = "green",
 *   "Don't know" = "gray"
 * ))
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
@@ -705,12 +633,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-28-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -721,7 +643,7 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1, labeller = label_wrap_gen(width = 12)) +
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(title = "Was Britain right/wrong to vote to leave EU?",
        subtitle = "YouGov Survey Results, 2-3 September 2019",
        caption = "Source: bit.ly/2lCJZVg",
@@ -731,11 +653,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 *   "Right" = "#67a9cf",
 *   "Don't know" = "gray"
   ))
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
@@ -748,12 +665,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 .panelset[
 
 .panel[.panel-name[Plot]
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
-```
-
 &lt;img src="effective_files/figure-html/unnamed-chunk-29-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -764,7 +675,7 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
   geom_bar() +
   facet_wrap(~region, nrow = 1, labeller = label_wrap_gen(width = 12)) +
-  guides(fill = FALSE) +
+  guides(fill = "none") +
   labs(title = "Was Britain right/wrong to vote to leave EU?",
        subtitle = "YouGov Survey Results, 2-3 September 2019",
        caption = "Source: bit.ly/2lCJZVg",
@@ -773,11 +684,6 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
                                "Right" = "#67a9cf",
                                "Don't know" = "gray")) +
 * theme_minimal()
-```
-
-```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use
-## `guides(&lt;scale&gt; = "none")` instead.
 ```
 ]
 
