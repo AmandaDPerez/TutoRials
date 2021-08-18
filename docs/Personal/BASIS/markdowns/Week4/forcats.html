@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>forcats Tutorial</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amanda D. Perez, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/fabric/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# forcats Tutorial
+## <br><br> Psych 101x
+### Amanda D. Perez, PhD
+
+---
+
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;img src = "ucbext.png"&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+class: middle
+
+# Introduction to factors in R
+
+---
+
+## Factors
+
+.pull-left-wide[
+**Factors represent categorical variables**  
+Categorical variables take a limited number of different values but can be represented by either character or integer values
+
+**Understanding of factors in R language is critical to developing statistical modeling**  
+Character variables are treated differently in statistical models than continuous variables
+
+**By the end of this tutorial on forcats package for working with factors in R:**  
+You will be able to inspect levels, change the order of levels, change the values of levels, combine levels, and add/drop levels more efficiently.
+
+]
+
+---
+
+## **str()** Function
+
+.pull-left-wide[
+A factor variable in R is represented, or you can say stored, as a vector of integer values. 
+
+Each integer represents a character value used to display the levels of character values. You can check that by `str()` function. 
+
+]
+---
+
+## Penguins Data
+
+When you check the structure of the data frame, you will realize that all the factor variables are denoted by 1, 2, 1 after the colon(:). 
+
+**Let’s take a look for a better understanding:**
+
+.medium[
+
+```
+## tibble [344 × 8] (S3: tbl_df/tbl/data.frame)
+##  $ species          : Factor w/ 3 levels "Adelie","Chinstrap",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ island           : Factor w/ 3 levels "Biscoe","Dream",..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ bill_length_mm   : num [1:344] 39.1 39.5 40.3 NA 36.7 39.3 38.9 39.2 34.1 42 ...
+##  $ bill_depth_mm    : num [1:344] 18.7 17.4 18 NA 19.3 20.6 17.8 19.6 18.1 20.2 ...
+##  $ flipper_length_mm: int [1:344] 181 186 195 NA 193 190 181 195 193 190 ...
+##  $ body_mass_g      : int [1:344] 3750 3800 3250 NA 3450 3650 3625 4675 3475 4250 ...
+##  $ sex              : Factor w/ 2 levels "female","male": 2 1 1 NA 1 2 1 2 NA NA ...
+##  $ year             : int [1:344] 2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...
+```
+]
+
+---
+
+
+## More on Factors
+
+.pull-left-wide[
+**Both numeric and character variables can be converted to factors**  
+This is done using `as.factor()` or `factor()` function from the `forcats` package in R.
+
+**The levels of factors are always stored as character values**  
+You can check the levels of factor variables using levels() function in R.
+
+**Factors in R can be either ordered or unordered**  
+Please do not ignore this point; in some analysis or statistical models, the order of the levels may matter.
+
+]
+
+---
+
+
+.question[
+Here, we will use `factor()` function to covert `year` variable from penguins data to factor. We will then check the levels of the variable using `levels()` function. Finally, we check the class of the variable, which will validate our third point that levels are represented as characters.
+]
+
+.midi[
+
+```r
+library(forcats)
+penguins$year_factor &lt;- factor(penguins$year)
+class(penguins$year_factor)
+```
+
+```
+## [1] "factor"
+```
+
+```r
+levels(penguins$year_factor)
+```
+
+```
+## [1] "2007" "2008" "2009"
+```
+]
+You can see the output values are represented using inverted quotes confirming that levels are stored as character values.
+---
+
+## Changing the order of levels for a factor variable
+
+.pull-left-wide[
+There could be multiple reasons for which you would want to change the order of levels in factor variables. 
+
+As this tutorial is only about R programming language and forcats package, the why and when do we need to order the levels of factor variables is out of scope. 
+
+However, we will still discuss the different logical approaches one can take to reorder the factor variable levels.
+]
+
+---
+
+## Manually ordering levels of a factor variable
+
+.pull-left-wide[
+Here the choice is your that is how you wish to reorder the levels. Let’s say you want to reorder levels of `island` variable; then, you can use fct_relevel() function as illustrated below.
+
+
+.medium[
+
+```r
+levels(penguins$island)
+```
+
+```
+## [1] "Biscoe"    "Dream"     "Torgersen"
+```
+
+```r
+fct_relevel(penguins$island, c("Dream", "Biscoe", "Torgersen")) %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Dream Biscoe Torgersen
+```
+]
+]
+
+---
+
+## Reorder factor levels based on the appearance in data
+
+.pull-left-wide[
+The `fct_inorder()` will reorder the levels of a factor variable in R based on the order in which they appear in the data. Below you will notice that Torgersen appears, then Biscoe and lastly Dream.
+
+
+.medium[
+
+```r
+fct_inorder(penguins$island) %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Torgersen Biscoe Dream
+```
+]
+]
+
+---
+
+
+## Order factor levels based on the frequency
+
+.pull-left-wide[
+The `fct_infreq()` function from the forcats package arranges the levels of a factor based on each level’s frequency. The level with the highest frequency takes the first place, followed by lesser frequent levels. It seems most penguins in the dataset come from the island of Biscoe, followed by Dream and Torgersen.
+
+
+.medium[
+
+```r
+fct_infreq(penguins$island) %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Biscoe Dream Torgersen
+```
+]
+]
+
+---
+
+## Reversing the order of levels
+
+.pull-left-wide[
+If you are interested in reversing the order of the levels of the factors, you can use the `fct_rev()` function. You can see we end up with exact reverse order. If you wish, you can check the original order using `levels()` function.
+
+
+.medium[
+
+```r
+levels(penguins$island)
+```
+
+```
+## [1] "Biscoe"    "Dream"     "Torgersen"
+```
+
+```r
+fct_rev(penguins$island) %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Torgersen Dream Biscoe
+```
+]
+]
+
+---
+
+## Add or drop factor levels in R
+
+.pull-left-wide[
+The three functions which are important to know from the addition and deletion perspective are:  
+
+**fct_expand()** – use it to add new level  
+
+**fct_explicit_na()** – use it, if you wish to assign NA as one of the levels. This way, when you plot charts, NA’s will also appear.  
+
+**fct_drop()** – use it drop a particular level  
+
+]
+
+---
+
+
+## Add or drop factor levels in R
+
+.pull-left-wide[
+The three functions which are important to know from the addition and deletion perspective are:  
+
+**fct_expand()** – use it to add new level  
+
+
+.medium[
+
+```r
+# Adding factor level
+fct_expand(penguins$island,"Neverland") %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Biscoe Dream Torgersen Neverland
+```
+]
+]
+
+---
+
+## Add or drop factor levels in R
+
+.pull-left-wide[
+The three functions which are important to know from the addition and deletion perspective are:  
+
+**fct_explicit_na()** – use it, if you wish to assign NA as one of the levels. This way, when you plot charts, NA’s will also appear.  
+
+
+
+.small[
+
+```r
+# Converting NA to factor level
+f1 &lt;- factor(c(1, 1, NA, NA,2, 2, NA,2, 1, 2, 2))
+f1
+```
+
+```
+##  [1] 1    1    &lt;NA&gt; &lt;NA&gt; 2    2    &lt;NA&gt; 2    1    2    2   
+## Levels: 1 2
+```
+
+```r
+f2 &lt;- fct_explicit_na(f1, na_level = "(Unknown)")
+f2
+```
+
+```
+##  [1] 1         1         (Unknown) (Unknown) 2         2        
+##  [7] (Unknown) 2         1         2         2        
+## Levels: 1 2 (Unknown)
+```
+]
+]
+
+---
+
+## Add or drop factor levels in R
+
+.pull-left-wide[
+The three functions which are important to know from the addition and deletion perspective are:  
+
+**fct_drop()** – use it drop a particular level  
+
+
+.medium[
+
+```r
+# Drop factor level
+fac1 &lt;- factor(c("aa","bb"),c("aa","bb","cc"))
+fac1
+```
+
+```
+## [1] aa bb
+## Levels: aa bb cc
+```
+
+```r
+fac2 &lt;- fct_drop(fac1) 
+fac2
+```
+
+```
+## [1] aa bb
+## Levels: aa bb
+```
+]
+]
+
+---
+
+## Changing values of factor levels in R
+
+.pull-left-wide[
+**The task of changing the levels of variables can be done in multiple ways.** 
+
+One, you may be interested in manual recording. 
+
+Two, You may be interested in collapsing the levels into lesser groups. 
+
+Three, You may be interested in clubbing the least/most common levels into a single level. 
+
+Fourth, You may just want to keep/drop some levels and rename everything as others.
+
+]
+
+---
+
+## **fct_collapse()**
+
+.pull-left-wide[
+**Use fct_collapse() to manually combine levels into defined groups.** 
+
+Below we collapse Dream and Biscoe to form another group called others.
+
+
+```r
+fct_collapse(penguins$island, Other = c("Dream", "Biscoe")) %&gt;%
+  head(30)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen Other     Other     Other     Other    
+## [25] Other     Other     Other     Other     Other     Other    
+## Levels: Other Torgersen
+```
+
+]
+
+---
+
+## **fct_other()**
+
+.pull-left-wide[
+**Use fct_other() to replace levels** that you don’t want to keep to others. You can also mention levels that you want to drop; here, the level mentioned in the `drop`= argument will be named others. The below code produces the exact same results, as mentioned on the previous slide. 
+
+.small[
+
+```r
+# Example showing keep as argument
+fct_other(penguins$island, keep = c("Torgersen")) %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Torgersen Other
+```
+
+```r
+# Example showing drop as argument
+fct_other(penguins$island, drop = c("Dream", "Biscoe")) %&gt;%
+  head(20)
+```
+
+```
+##  [1] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+##  [7] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [13] Torgersen Torgersen Torgersen Torgersen Torgersen Torgersen
+## [19] Torgersen Torgersen
+## Levels: Torgersen Other
+```
+
+]
+]
+---
+
+## **fct_lump()**
+
+.pull-left-wide[
+**Use fct_lump() to group most/least common levels into a single level.** The function is very powerful can provides other statistics to be considered as a measure to combine levels. I encourage you to read more about the function using `help(fct_lump)`. Below we reserve the most common n values. This results in the output of Biscoe and Other.
+
+.medium[
+
+```r
+fct_lump(penguins$island, n = 1) %&gt;%
+  head(30)
+```
+
+```
+##  [1] Other  Other  Other  Other  Other  Other  Other  Other 
+##  [9] Other  Other  Other  Other  Other  Other  Other  Other 
+## [17] Other  Other  Other  Other  Biscoe Biscoe Biscoe Biscoe
+## [25] Biscoe Biscoe Biscoe Biscoe Biscoe Biscoe
+## Levels: Biscoe Other
+```
+
+]
+]
+---
+
+## **fct_recode()**
+
+.pull-left-wide[
+**use fct_recode() if you wish to replace the values of the levels manually.** The other function which you can use to achieve the same task is `fct_relable()`.
+
+.medium[
+
+```r
+levels(penguins$sex)
+```
+
+```
+## [1] "female" "male"
+```
+
+```r
+fct_recode(penguins$sex, ladies = "female", gentlemen = "male") %&gt;%
+  head(20)
+```
+
+```
+##  [1] gentlemen ladies    ladies    &lt;NA&gt;      ladies    gentlemen
+##  [7] ladies    gentlemen &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;     
+## [13] ladies    gentlemen gentlemen ladies    ladies    gentlemen
+## [19] ladies    gentlemen
+## Levels: ladies gentlemen
+```
+
+]
+]
+
+---
+
+## Final Note
+
+.pull-left-wide[
+**To make permanent changes you have to update the dataset**. All of the examples we've gone through so far have displayed a result, but have not changed the dataset itself. To do so, we do the following:
+
+.medium[
+
+```r
+levels(penguins$sex)
+```
+
+```
+## [1] "female" "male"
+```
+
+```r
+*penguins$sex &lt;- fct_recode(penguins$sex, ladies = "female",
+*                          gentlemen = "male")
+levels(penguins$sex)
+```
+
+```
+## [1] "ladies"    "gentlemen"
+```
+
+]
+]
+
+---
+
+## Reference
+
+Source: https://www.r-bloggers.com/2020/06/working-with-factors-in-r-tutorial-forcats-package/, Retrieved August, 2021
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
