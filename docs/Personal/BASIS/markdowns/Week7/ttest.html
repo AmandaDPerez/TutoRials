@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>T-Tests</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amanda D. Perez, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/fabric/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# T-Tests
+## <br><br> Psych 101x
+### Amanda D. Perez, PhD
+
+---
+
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;img src = "ucbext.png"&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+
+
+class: middle
+
+# What is the purpose of a t-test?
+
+---
+
+## Looking at Differences
+
+Researchers are sometimes interested in looking at differences *between* groups of people. 
+
+In particular, in experimental research we often want to manipulate what happens to people so that we can make causal
+inferences. 
+
+---
+
+## Looking at Differences
+
+For example, let’s say we take two groups of people and randomly assign one group a program of dieting pills and the other group a program of sugar pills (which they think will help them lose weight).
+
+Then, if the people who take the dieting pills lose more weight than those on the sugar pills we can infer that the diet pills caused the weight loss.
+
+---
+
+## T-Tests
+
+- This is a powerful research tool because it goes one step beyond merely observing variables and looking for relationships (as in correlation ).
+
+- T-Tests handle the simplest scenario: when we have two groups, or, to be more specific, when we want to compare two means.
+
+---
+
+## T-Tests
+
+The simplest form of experiment that can be done is one with only one independent variable that is manipulated in only two ways and only one outcome is measured.
+
+- More often than not, the manipulation of the independent variable involves having an experimental condition and a control.
+
+- Example: Is the movie Scream 2 scarier than the original Scream? We could measure heart rates (which indicate anxiety) during both films and compare them.
+
+This situation can be analyzed with a t-test.
+
+---
+
+## Rationale for T-Tests
+
+- Two samples of data are collected and the sample means are calculated. These means might differ by either a little or a lot.
+
+- If the samples come from the same population, then we expect their means to be roughly equal. Although it is possible for means to differ by chance alone, we would expect large differences between sample means to occur very infrequently.
+
+- We compare the difference between the sample means that we collected to the difference between the sample means that we would expect to obtain if there were no effect (i.e. if the null hypothesis were true). We use the standard error as a gauge of the variability between sample means.
+
+---
+
+## Rationale for T-Tests
+
+If the difference between the samples we have collected is larger than what we would expect based on the standard error then we can assume one of two things:
+
+- There is no effect and sample means in our population fluctuate a lot and we have, by chance, collected two samples that are atypical of the population from which they came.
+
+- The two samples come from different populations but are typical of their respective parent population. In this scenario, the difference between samples represents a genuine difference between the samples (and so the null hypothesis is incorrect).
+
+---
+
+## Rationale for T-Tests
+
+As the observed difference between the sample means gets larger, the more confident we become that the second explanation is correct (i.e. that the null hypothesis should be rejected). 
+
+If the null hypothesis is incorrect, then we gain confidence that the two sample means differ because of the different experimental manipulation imposed on each sample.
+
+&lt;img src="img/tformula.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## T-Test Types
+
+There are two different t-tests and it depends on whether the IV  was manipulated using the same participants or different:
+
+- **Independent t-test:** This test is used when there are two experimental conditions and different participants were assigned to each condition 
+
+- **Dependent t-test:** This test is used when there are two experimental conditions and the same participants took part in both conditions of the experiment
+
+---
+
+## Assumptions for T-Tests
+
+Both the independent and the dependent t-test assume:
+
+- The sampling distribution is normally distributed. In the dependent t test this means that the sampling distribution of the differences between scores should be normal, not the scores themselves.
+
+- Data are measured at least at the interval level.
+
+The independent t-test, because it is used to test different groups of people, also assumes:
+
+- Variances in these populations are roughly equal (homogeneity of variance).
+
+- Scores in different treatment conditions are independent (because they come from different people).
+
+---
+
+## T-Test Example: What type of t-test is this?
+
+
+**Is arachnophobia (fear of spiders) specific to real spiders or is a picture enough?**
+
+Participants
+
+- 24 arachnophobic individuals
+
+Manipulation (IV) with 2 levels:
+
+- 12 participants were exposed to a real spider
+
+- 12 were exposed to a picture of the same spider
+
+Outcome (DV)
+
+- Anxiety
+
+---
+
+## T-Test Example in R
+
+To do a t-test we use the function *t.test()*
+
+It follows the following format:
+
+
+```r
+t.test(outcome ~ predictor, data = dataFrame, paired = FALSE)
+```
+
+**OR**
+
+
+```r
+t.test(dataset$vector1, dataset$vector2, paired = TRUE)
+```
+
+---
+
+
+## Independent T-Test Example in R
+
+
+```r
+t.test(anxiety ~ spider_type, spiderdata)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  anxiety by spider_type
+## t = -1.6813, df = 21.385, p-value = 0.1072
+## alternative hypothesis: true difference in means between group Picture and group Real is not equal to 0
+## 95 percent confidence interval:
+##  -15.648641   1.648641
+## sample estimates:
+## mean in group Picture    mean in group Real 
+##                    40                    47
+```
+
+---
+
+## Reporting the Results:
+
+On average, participants experienced greater anxiety from real spiders (*M* = 47, *SE* = 3.18), than from pictures of real spiders (*M* = 40, *SE* = 2.68).
+
+This difference was not significant, t(21.4) = -1.68, p &gt; 0.05; however, it did represent a medium-sized effect, r = 0.34.
+
+---
+
+## Visualizing T-Test Example in R
+
+
+```r
+library(viridis)
+ggplot(spiderdata, aes(spider_type, anxiety, fill = spider_type)) + stat_summary(fun = "mean", geom = "bar") +
+  scale_fill_viridis(discrete = TRUE, option = "mako") +
+  theme_minimal() +
+  guides(fill = "none") +
+  labs(y = "Anxiety", x = "Spider Type", title = "Anxiety x Type of Spider")
+```
+
+---
+
+## Visualizing T-Test Example in R
+
+&lt;img src="ttest_files/figure-html/unnamed-chunk-7-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## T-Test Example: What type of t-test is this?
+
+
+**Is arachnophobia (fear of spiders) specific to real spiders or is a picture enough?**
+
+Participants
+
+- 12 arachnophobic individuals
+
+Manipulation (IV) with 2 levels:
+
+- Each participant was exposed to a real spider and a picture of the same spider at two points in time (SAME people).
+
+Outcome (DV)
+
+- Anxiety
+
+---
+
+## Dependent T-Test Example in R
+
+
+```r
+t.test(anxiety ~ spider_type, paired = TRUE, spiderdata)
+```
+
+```
+## 
+## 	Paired t-test
+## 
+## data:  anxiety by spider_type
+## t = -2.4725, df = 11, p-value = 0.03098
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -13.2312185  -0.7687815
+## sample estimates:
+## mean of the differences 
+##                      -7
+```
+
+---
+
+## Reporting the Results:
+
+On average, participants experienced significantly greater anxiety from real spiders (*M* = 47, *SE* = 3.18), than from pictures of spiders (*M* = 40, *SE* = 2.68).
+
+This difference is significant, t(11) = 2.47, p &lt; 0.05; however, it did represent a medium-sized effect, r = 0.6.
+
+---
+
+## Important note on p values
+
+- A p value of &lt; 0.05 is our (somewhat arbitrary) cut off for statistical significance 
+
+- When a p value is &lt; 0.05 we say it is statistically significant
+
+- ...but
+
+---
+
+## Important note on p values
+
+- The American Statistical Association put out the statement clarifying the p value because “The p-value was never intended to be a substitute for scientific reasoning.” 
+
+- Overemphasis on p value often leads to the neglect of other information in studies such as **effect size**. 
+
+---
+
+## Important note on p values
+
+Although p-values are helpful in assessing how incompatible the data are with a specified statistical model, other factors like the design of a study, the quality of the measurements, the external evidence for the phenomenon under study, and the validity of assumptions should be managed. 
+
+---
+
+## Important note on p values
+
+The p-value is easily misinterpreted. 
+
+For example, it is often equated with the strength of a relationship, **but a tiny effect size can have very low p-values with a large enough sample size.**
+
+---
+
+## Important note on p values
+
+**A tiny effect size can have very low p-values with a large enough sample size.**
+
+The p value is highly influenced by sample size: If your sample is too small you will likely not be able to detect a true effect (type 2 error). On the flip side, if you sample size is huge you are far more likely to find a significant result even when the true effect is small or negligent (type 1 error). 
+
+---
+
+## Important note on p values
+
+**A tiny effect size can have very low p-values with a large enough sample size.**
+
+This is why effect sizes are important as they are not influenced by huge sample sizes (i.e. a large sample does not mean you will have a large effect size)
+
+For the t-test, the most commonly reported effect size is Cohen’s d
+
+---
+
+## Effect Sizes in English
+
+If an effect is large, you should be able to observe the effect even with a relatively small sample
+
+Example: Distinguishing sex in sea lions 
+
+&lt;img src="img/lion.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Effect Sizes in English
+
+If an effect is small, you'd need a big sample size to detect it.
+
+Example: Distinguishing sex in pugs 
+
+&lt;img src="img/pug.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Cohen's d
+
+**Cohen (1988)** defines the effect size as the extent to which the phenomenon is found within the population or, in the context of statistical significance testing, the degree to which the null hypothesis is false
+
+The extent to which the DV can be controlled, predicted, and explained by the IV(s) (Snyder &amp; Lawson, 1993)
+
+---
+
+## Cohen's d
+
+&lt;img src="img/cohen.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Cohen's d
+
+&lt;img src="img/chart.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Cohen's d in R
+
+**cohen.d(data$DV, data$IV)**
+
+
+```r
+library(palmerpenguins)
+library(psych)
+cohen.d(penguins$body_mass_g, penguins$sex)
+```
+
+```
+## Call: cohen.d(x = penguins$body_mass_g, group = penguins$sex)
+## Cohen d statistic of difference between two means
+##      lower effect upper
+## [1,]   0.7   0.94  1.18
+## 
+## Multivariate (Mahalanobis) distance between groups
+## [1] 0.94
+## r equivalent of difference between two means
+## data 
+## 0.42
+```
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
