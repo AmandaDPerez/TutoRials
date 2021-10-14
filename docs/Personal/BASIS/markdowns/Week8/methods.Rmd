@@ -70,7 +70,11 @@ In the experimental condition: all participants are exposed to the independent v
 
 ---
 
-![experimental-research](img/ER.png)
+
+```{r echo=FALSE, out.width="52%"}
+knitr::include_graphics("img/ER.png")
+```
+
 ---
 
 ## Descriptive Research
