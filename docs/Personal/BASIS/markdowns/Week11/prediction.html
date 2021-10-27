@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Predicion &amp; Overfitting</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amanda D. Perez, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/fabric/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Predicion &amp; Overfitting
+## <br><br> Psych 101x
+### Amanda D. Perez, PhD
+
+---
+
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;img src = "ucbext.png"&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+class: middle
+
+# Prediction
+
+---
+
+## Goal: Building a spam filter
+
+- Data: Set of emails and we know if each email is spam/not and other features 
+- Use logistic regression to predict the probability that an incoming email is spam
+- Use model selection to pick the model with the best predictive performance
+
+--
+- Building a model to predict the probability that an email is spam is only half of the battle! We also need a decision rule about which emails get flagged as spam (e.g. what probability should we use as out cutoff?)
+
+--
+- A simple approach: choose a single threshold probability and any email that exceeds that probability is flagged as spam
+
+---
+
+## A multiple regression approach
+
+.panelset[
+.panel[.panel-name[Output]
+.small[
+
+```
+## # A tibble: 22 × 5
+##    term         estimate std.error statistic  p.value
+##    &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 (Intercept)  -9.09e+1   9.80e+3  -0.00928 9.93e- 1
+##  2 to_multiple1 -2.68e+0   3.27e-1  -8.21    2.25e-16
+##  3 from1        -2.19e+1   9.80e+3  -0.00224 9.98e- 1
+##  4 cc            1.88e-2   2.20e-2   0.855   3.93e- 1
+##  5 sent_email1  -2.07e+1   3.87e+2  -0.0536  9.57e- 1
+##  6 time          8.48e-8   2.85e-8   2.98    2.92e- 3
+##  7 image        -1.78e+0   5.95e-1  -3.00    2.73e- 3
+##  8 attach        7.35e-1   1.44e-1   5.09    3.61e- 7
+##  9 dollar       -6.85e-2   2.64e-2  -2.59    9.64e- 3
+## 10 winneryes     2.07e+0   3.65e-1   5.67    1.41e- 8
+## 11 inherit       3.15e-1   1.56e-1   2.02    4.32e- 2
+## 12 viagra        2.84e+0   2.22e+3   0.00128 9.99e- 1
+## 13 password     -8.54e-1   2.97e-1  -2.88    4.03e- 3
+## 14 num_char      5.06e-2   2.38e-2   2.13    3.35e- 2
+## 15 line_breaks  -5.49e-3   1.35e-3  -4.06    4.91e- 5
+## 16 format1      -6.14e-1   1.49e-1  -4.14    3.53e- 5
+## 17 re_subj1     -1.64e+0   3.86e-1  -4.25    2.16e- 5
+## 18 exclaim_subj  1.42e-1   2.43e-1   0.585   5.58e- 1
+## 19 urgent_subj1  3.88e+0   1.32e+0   2.95    3.18e- 3
+## 20 exclaim_mess  1.08e-2   1.81e-3   5.98    2.23e- 9
+## 21 numbersmall  -1.19e+0   1.54e-1  -7.74    9.62e-15
+## 22 numberbig    -2.95e-1   2.20e-1  -1.34    1.79e- 1
+```
+]
+]
+.panel[.panel-name[Code]
+
+```r
+logistic_reg() %&gt;%
+  set_engine("glm") %&gt;%
+  fit(spam ~ ., data = email, family = "binomial") %&gt;%
+  tidy() %&gt;%
+  print(n = 22)
+```
+
+```
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+```
+]
+]
+
+---
+
+## Prediction
+
+- The mechanics of prediction is **easy**:
+  - Plug in values of predictors to the model equation
+  - Calculate the predicted value of the response variable, `\(\hat{y}\)`
+
+--
+- Getting it right is **hard**!
+  - There is no guarantee the model estimates you have are correct
+  - Or that your model will perform as well with new data as it did with your sample data
+
+---
+
+## Underfitting and overfitting
+
+&lt;img src="prediction_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Spending our data
+
+- Several steps to create a useful model: parameter estimation, model selection, performance assessment, etc.
+
+- Doing all of this on the entire data we have available can lead to **overfitting**
+
+- Allocate specific subsets of data for different tasks, as opposed to allocating the largest possible amount to the model parameter estimation only (which is what we've done so far)
+
+---
+
+class: middle
+
+# Splitting data
+
+---
+
+## Splitting data
+
+- **Training set:**
+  - Sandbox for model building 
+  - Spend most of your time using the training set to develop the model
+  - Majority of the data (usually 80%)
+  
+- **Testing set:**
+  - Held in reserve to determine efficacy of one or two chosen models
+  - Critical to look at it once, otherwise it becomes part of the modeling process
+  - Remainder of the data (usually 20%)
+  
+---
+
+## Performing the split
+
+
+```r
+# Fix random numbers by setting the seed 
+# Enables analysis to be reproducible when random numbers are used 
+set.seed(1116)
+
+# Put 80% of the data into the training set 
+email_split &lt;- initial_split(email, prop = 0.80)
+
+# Create data frames for the two sets:
+train_data &lt;- training(email_split)
+test_data  &lt;- testing(email_split)
+```
+
+---
+
+## Peek at the split
+
+.small[
+.pull-left[
+
+```r
+glimpse(train_data)
+```
+
+```
+## Rows: 3,136
+## Columns: 21
+## $ spam         &lt;fct&gt; 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, …
+## $ to_multiple  &lt;fct&gt; 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, …
+## $ from         &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ cc           &lt;int&gt; 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35,…
+## $ sent_email   &lt;fct&gt; 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ time         &lt;dttm&gt; 2012-01-25 14:46:55, 2012-01-02 21:28:28,…
+## $ image        &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ attach       &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ dollar       &lt;dbl&gt; 10, 0, 0, 0, 0, 0, 13, 0, 0, 0, 2, 0, 0, 0…
+## $ winner       &lt;fct&gt; no, no, no, no, no, no, no, yes, no, no, n…
+## $ inherit      &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ viagra       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ password     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ num_char     &lt;dbl&gt; 23.308, 1.162, 4.732, 42.238, 1.228, 25.59…
+## $ line_breaks  &lt;int&gt; 477, 2, 127, 712, 30, 674, 367, 226, 98, 6…
+## $ format       &lt;fct&gt; 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, …
+## $ re_subj      &lt;fct&gt; 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, …
+## $ exclaim_subj &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, …
+## $ urgent_subj  &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ exclaim_mess &lt;dbl&gt; 12, 0, 2, 2, 2, 31, 2, 0, 0, 1, 0, 1, 2, 0…
+## $ number       &lt;fct&gt; small, none, big, big, small, small, small…
+```
+]
+.pull-right[
+
+```r
+glimpse(test_data)
+```
+
+```
+## Rows: 785
+## Columns: 21
+## $ spam         &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ to_multiple  &lt;fct&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, …
+## $ from         &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ cc           &lt;int&gt; 0, 1, 0, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ sent_email   &lt;fct&gt; 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ time         &lt;dttm&gt; 2012-01-01 09:55:06, 2012-01-01 11:38:32,…
+## $ image        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ attach       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, …
+## $ dollar       &lt;dbl&gt; 0, 0, 5, 0, 0, 0, 0, 5, 4, 0, 0, 0, 21, 0,…
+## $ winner       &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no…
+## $ inherit      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, …
+## $ viagra       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ password     &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, …
+## $ num_char     &lt;dbl&gt; 4.837, 15.075, 18.037, 45.842, 11.438, 1.4…
+## $ line_breaks  &lt;int&gt; 193, 354, 345, 881, 125, 24, 296, 13, 192,…
+## $ format       &lt;fct&gt; 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, …
+## $ re_subj      &lt;fct&gt; 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, …
+## $ exclaim_subj &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ urgent_subj  &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ exclaim_mess &lt;dbl&gt; 1, 10, 20, 5, 2, 0, 0, 0, 6, 0, 0, 1, 3, 0…
+## $ number       &lt;fct&gt; big, small, small, big, small, none, small…
+```
+]
+]
+
+
+
+---
+
+## Fit a model to the training dataset
+
+
+```r
+email_fit &lt;- glm(spam ~ ., data = train_data, family = "binomial")
+```
+
+---
+
+## Categorical predictors
+
+&lt;img src="prediction_files/figure-html/unnamed-chunk-8-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## `from` and `sent_email`
+
+.pull-left[
+- `from`: Whether the message was listed as from anyone (this is usually set by default for regular outgoing email)
+
+
+```r
+train_data %&gt;%
+  count(spam, from)
+```
+
+```
+## # A tibble: 3 × 3
+##   spam  from      n
+##   &lt;fct&gt; &lt;fct&gt; &lt;int&gt;
+## 1 0     1      2837
+## 2 1     0         3
+## 3 1     1       296
+```
+]
+.pull-right[
+- `sent_email`: Indicator for whether the sender had been sent an email in the last 30 days
+
+
+```r
+train_data %&gt;%
+  count(spam, sent_email)
+```
+
+```
+## # A tibble: 3 × 3
+##   spam  sent_email     n
+##   &lt;fct&gt; &lt;fct&gt;      &lt;int&gt;
+## 1 0     0           1972
+## 2 0     1            865
+## 3 1     0            299
+```
+]
+
+---
+
+## Numerical predictors
+
+.small[
+
+```
+## 
+## ── Variable type: numeric ──────────────────────────────────────────────────────────────────────────
+##    skim_variable spam  n_missing complete_rate      mean       sd    p0    p25     p50    p75  p100
+##  1 cc            0             0             1   0.393     2.62   0      0       0       0      68 
+##  2 cc            1             0             1   0.388     3.25   0      0       0       0      50 
+##  3 image         0             0             1   0.0536    0.503  0      0       0       0      20 
+##  4 image         1             0             1   0.00334   0.0578 0      0       0       0       1 
+##  5 attach        0             0             1   0.124     0.775  0      0       0       0      21 
+##  6 attach        1             0             1   0.227     0.620  0      0       0       0       2 
+##  7 dollar        0             0             1   1.56      5.33   0      0       0       0      64 
+##  8 dollar        1             0             1   0.779     3.01   0      0       0       0      36 
+##  9 inherit       0             0             1   0.0352    0.216  0      0       0       0       6 
+## 10 inherit       1             0             1   0.0702    0.554  0      0       0       0       9 
+*## 11 viagra        0             0             1   0         0      0      0       0       0       0 
+*## 12 viagra        1             0             1   0.0268    0.463  0      0       0       0       8 
+## 13 password      0             0             1   0.112     0.938  0      0       0       0      22 
+## 14 password      1             0             1   0.0201    0.182  0      0       0       0       2 
+## 15 num_char      0             0             1  11.4      14.9    0.003  1.97    6.83   15.7   190.
+## 16 num_char      1             0             1   5.63     15.7    0.001  0.468   0.999   3.55  174.
+## 17 line_breaks   0             0             1 247.      326.     2     42     138     318    4022 
+## 18 line_breaks   1             0             1 108.      321.     1     14      23      66.5  3729 
+## 19 exclaim_subj  0             0             1   0.0783    0.269  0      0       0       0       1 
+## 20 exclaim_subj  1             0             1   0.0769    0.267  0      0       0       0       1 
+## 21 exclaim_mess  0             0             1   6.68     50.2    0      0       1       5    1236 
+## 22 exclaim_mess  1             0             1   8.75     88.4    0      0       0       1    1209
+```
+]
+
+---
+
+## Fit a model to the training dataset
+
+
+```r
+email_fit &lt;- glm(spam ~ . - from - sent_email - viagra, data = train_data, family = "binomial") 
+```
+
+.small[
+
+```r
+email_fit
+```
+
+```
+## 
+## Call:  glm(formula = spam ~ . - from - sent_email - viagra, family = "binomial", 
+##     data = train_data)
+## 
+## Coefficients:
+##  (Intercept)  to_multiple1            cc          time         image        attach        dollar  
+##   -9.867e+01    -2.505e+00     1.944e-02     7.396e-08    -2.854e+00     5.070e-01    -6.440e-02  
+##    winneryes       inherit      password      num_char   line_breaks       format1      re_subj1  
+##    2.170e+00     4.499e-01    -7.065e-01     5.870e-02    -5.420e-03    -9.017e-01    -2.995e+00  
+## exclaim_subj  urgent_subj1  exclaim_mess   numbersmall     numberbig  
+##    1.002e-01     3.572e+00     1.009e-02    -8.518e-01    -1.329e-01  
+## 
+## Degrees of Freedom: 3135 Total (i.e. Null);  3117 Residual
+## Null Deviance:	    1974 
+## Residual Deviance: 1447 	AIC: 1485
+```
+]
+
+---
+
+## Predict outcome on the testing dataset
+
+
+```r
+predict(email_fit, test_data, type = "response") 
+```
+
+```
+##            1            2            3            4            5            6            7 
+## 7.086164e-03 1.810706e-03 1.910553e-02 1.242989e-03 1.213393e-02 1.697077e-01 4.097987e-02 
+##            8            9           10           11           12           13           14 
+## 1.385185e-01 6.168359e-02 9.831286e-02 8.653125e-04 3.223570e-01 3.157271e-03 8.612068e-03 
+##           15           16           17           18           19           20           21 
+## 3.642014e-03 3.856046e-02 5.901966e-03 2.180172e-03 6.590234e-03 1.243553e-01 2.583688e-01 
+##           22           23           24           25           26           27           28 
+## 2.334935e-02 7.830075e-04 1.551462e-03 6.917381e-02 5.115730e-02 1.388205e-01 1.886752e-02 
+##           29           30           31           32           33           34           35 
+## 8.795521e-03 3.115286e-03 5.079263e-03 3.868986e-03 1.136794e-04 4.639808e-02 8.016580e-03 
+##           36           37           38           39           40           41           42 
+## 8.097226e-02 7.511254e-02 4.260377e-02 1.735401e-02 3.932630e-03 8.916815e-03 6.842689e-02 
+##           43           44           45           46           47           48           49 
+## 7.017878e-02 1.063697e-02 1.107340e-01 5.739589e-02 7.380248e-03 5.752730e-02 7.079535e-02 
+##           50           51           52           53           54           55           56 
+## 7.645490e-02 6.558712e-02 7.120625e-02 6.423521e-02 1.147252e-02 1.849148e-02 9.274281e-04 
+##           57           58           59           60           61           62           63 
+## 8.001080e-03 4.283837e-03 2.661971e-02 2.618540e-02 3.125381e-03 9.676041e-02 4.733268e-01 
+##           64           65           66           67           68           69           70 
+## 4.633738e-02 1.561294e-02 2.243230e-03 1.383309e-04 3.038233e-02 1.790424e-02 1.877707e-02 
+##           71           72           73           74           75           76           77 
+## 7.469643e-02 7.836655e-03 1.631313e-01 1.634492e-01 4.373137e-02 6.610591e-02 2.683622e-01 
+##           78           79           80           81           82           83           84 
+## 1.727930e-02 3.953481e-03 4.326691e-03 4.345392e-03 1.580990e-02 6.989504e-02 6.989125e-02 
+##           85           86           87           88           89           90           91 
+## 1.891309e-02 1.803151e-01 1.942942e-03 5.191462e-02 1.904750e-01 8.780530e-02 1.101068e-02 
+##           92           93           94           95           96           97           98 
+## 3.650955e-03 6.678425e-02 1.321821e-02 1.647625e-01 5.967952e-01 7.325507e-02 6.742957e-02 
+##           99          100          101          102          103          104          105 
+## 2.916043e-01 9.045984e-02 9.452828e-02 1.212866e-01 1.142981e-01 3.178238e-02 1.943104e-10 
+##          106          107          108          109          110          111          112 
+## 1.332220e-01 1.711314e-01 6.614465e-03 7.175339e-02 3.457049e-01 5.037771e-02 1.729224e-01 
+##          113          114          115          116          117          118          119 
+## 1.870238e-02 2.098786e-02 2.716634e-02 1.125374e-02 1.613886e-02 2.408294e-03 1.943683e-03 
+##          120          121          122          123          124          125          126 
+## 6.792235e-02 1.707997e-03 2.521153e-04 2.778330e-03 1.817874e-02 6.941636e-02 2.935179e-03 
+##          127          128          129          130          131          132          133 
+## 1.584788e-03 5.122554e-02 4.831665e-02 1.899519e-02 3.531342e-02 6.359694e-03 7.873548e-02 
+##          134          135          136          137          138          139          140 
+## 1.885374e-03 9.898780e-03 2.078206e-02 1.429506e-02 7.717700e-02 5.308561e-03 4.465426e-03 
+##          141          142          143          144          145          146          147 
+## 2.197343e-02 3.895205e-04 6.602918e-02 1.854236e-01 7.486245e-02 3.547742e-02 1.327378e-02 
+##          148          149          150          151          152          153          154 
+## 1.884314e-01 3.662392e-02 5.307437e-03 1.896621e-02 4.128545e-02 1.338557e-03 2.826222e-01 
+##          155          156          157          158          159          160          161 
+## 4.550077e-02 7.113011e-02 3.658666e-01 3.663380e-03 1.494909e-02 5.063529e-04 6.232315e-10 
+##          162          163          164          165          166          167          168 
+## 1.155191e-02 2.128180e-02 8.591066e-03 6.770049e-02 5.101105e-01 9.238102e-03 1.847411e-01 
+##          169          170          171          172          173          174          175 
+## 3.539543e-01 1.783246e-02 1.143027e-02 1.825234e-02 2.020375e-02 1.265526e-04 4.312198e-02 
+##          176          177          178          179          180          181          182 
+## 3.463596e-02 1.950022e-02 1.527799e-02 1.444088e-02 1.543416e-02 1.369951e-02 3.252389e-03 
+##          183          184          185          186          187          188          189 
+## 5.090407e-02 3.378708e-03 1.227296e-02 1.876026e-01 7.386812e-02 4.401113e-03 1.779577e-01 
+##          190          191          192          193          194          195          196 
+## 3.583620e-01 3.586151e-01 3.585625e-01 1.325599e-02 7.818292e-02 8.184652e-02 8.177842e-02 
+##          197          198          199          200          201          202          203 
+## 3.551874e-03 4.735641e-02 1.380148e-01 7.476468e-02 5.055378e-03 1.308193e-02 2.818147e-02 
+##          204          205          206          207          208          209          210 
+## 5.859393e-03 4.354078e-03 3.728790e-01 1.415215e-01 8.701255e-02 1.248316e-02 3.307781e-02 
+##          211          212          213          214          215          216          217 
+## 4.577059e-03 7.753218e-03 4.389104e-03 1.834453e-01 5.838543e-04 9.248143e-02 3.005989e-03 
+##          218          219          220          221          222          223          224 
+## 1.320291e-02 7.295633e-02 8.537968e-02 3.648788e-01 3.651557e-01 7.245551e-02 8.683387e-02 
+##          225          226          227          228          229          230          231 
+## 2.096612e-02 7.975145e-02 1.270479e-03 2.013099e-01 1.144223e-02 4.312515e-03 1.634732e-02 
+##          232          233          234          235          236          237          238 
+## 4.880822e-02 7.465036e-02 5.886206e-02 8.679112e-03 8.468191e-02 4.466631e-03 3.874248e-03 
+##          239          240          241          242          243          244          245 
+## 9.417770e-02 8.089327e-02 2.130874e-01 1.429519e-02 1.958755e-03 5.010926e-03 4.081006e-01 
+##          246          247          248          249          250          251          252 
+## 2.226117e-02 4.611107e-03 3.493508e-03 8.208414e-04 3.790874e-01 3.755277e-01 3.413182e-03 
+##          253          254          255          256          257          258          259 
+## 2.042251e-04 1.644646e-01 4.107601e-02 5.849909e-02 9.188410e-03 3.710989e-03 2.080010e-03 
+##          260          261          262          263          264          265          266 
+## 1.948484e-01 7.960649e-02 4.088341e-05 1.154636e-03 2.038411e-01 4.881158e-03 8.353308e-02 
+##          267          268          269          270          271          272          273 
+## 2.038551e-01 4.943185e-02 9.194222e-02 2.915532e-06 2.228061e-02 1.932413e-01 1.805680e-01 
+##          274          275          276          277          278          279          280 
+## 8.695263e-03 9.357437e-03 3.083144e-02 1.173282e-01 9.909052e-04 2.012675e-06 4.324657e-02 
+##          281          282          283          284          285          286          287 
+## 3.985614e-02 4.853080e-02 7.077006e-02 8.849361e-02 3.804046e-01 3.126959e-01 3.384622e-01 
+##          288          289          290          291          292          293          294 
+## 1.084737e-01 9.426384e-02 2.913639e-01 1.898808e-01 8.977521e-02 8.540460e-02 3.224258e-01 
+##          295          296          297          298          299          300          301 
+## 4.208679e-01 8.326867e-01 6.140584e-01 8.405195e-02 1.146174e-01 5.596901e-03 2.001502e-01 
+##          302          303          304          305          306          307          308 
+## 1.051866e-01 9.898190e-02 1.095893e-01 4.339254e-03 6.147597e-03 5.016531e-03 3.443053e-02 
+##          309          310          311          312          313          314          315 
+## 1.213537e-02 1.323443e-02 1.287145e-02 1.344608e-02 5.791026e-02 1.528113e-02 4.056362e-03 
+##          316          317          318          319          320          321          322 
+## 1.273013e-02 2.449664e-03 7.574916e-02 3.091294e-01 3.917370e-01 3.898895e-01 2.236095e-02 
+##          323          324          325          326          327          328          329 
+## 2.078336e-02 1.969117e-02 1.011963e-02 1.012436e-01 2.248392e-02 4.351227e-03 1.168821e-02 
+##          330          331          332          333          334          335          336 
+## 3.522326e-02 1.571524e-02 1.110100e-02 8.737225e-02 1.979482e-01 7.970692e-02 2.026446e-01 
+##          337          338          339          340          341          342          343 
+## 4.941250e-03 3.358129e-03 1.201083e-02 8.044811e-02 4.825084e-03 1.948790e-01 7.997776e-03 
+##          344          345          346          347          348          349          350 
+## 5.032598e-02 6.139040e-03 7.816485e-03 9.823626e-02 1.970205e-03 4.694364e-03 4.063798e-03 
+##          351          352          353          354          355          356          357 
+## 3.301482e-03 4.675986e-02 9.983976e-04 2.814987e-03 3.231652e-02 4.037227e-02 3.312624e-03 
+##          358          359          360          361          362          363          364 
+## 4.997729e-03 6.512992e-05 5.067290e-02 5.625116e-02 1.415967e-02 7.028573e-03 3.679683e-03 
+##          365          366          367          368          369          370          371 
+## 1.501908e-01 1.642249e-02 4.357541e-01 3.889181e-01 1.319568e-02 1.376312e-01 3.789093e-01 
+##          372          373          374          375          376          377          378 
+## 1.289703e-02 1.029896e-01 2.646143e-04 5.705186e-02 2.152639e-02 4.573123e-03 4.463885e-03 
+##          379          380          381          382          383          384          385 
+## 2.070559e-01 1.068251e-02 1.615260e-02 3.298004e-02 6.479196e-02 4.432777e-03 4.676719e-02 
+##          386          387          388          389          390          391          392 
+## 1.715509e-02 1.433240e-02 5.796818e-02 5.109670e-03 7.045406e-03 4.774854e-03 2.250714e-01 
+##          393          394          395          396          397          398          399 
+## 1.794847e-04 2.187709e-01 8.521724e-02 4.369787e-01 9.098505e-02 5.120809e-03 2.540426e-03 
+##          400          401          402          403          404          405          406 
+## 3.142674e-03 1.170503e-04 1.718298e-02 1.627761e-02 7.903451e-03 1.680541e-02 9.092030e-05 
+##          407          408          409          410          411          412          413 
+## 1.681073e-02 2.086384e-01 5.168159e-03 3.202303e-02 1.590809e-02 1.233950e-01 5.246577e-03 
+##          414          415          416          417          418          419          420 
+## 3.967604e-01 2.502482e-02 2.481900e-02 4.913825e-01 1.305938e-02 3.273136e-02 2.156346e-01 
+##          421          422          423          424          425          426          427 
+## 4.898195e-01 1.691014e-02 2.538904e-04 5.368543e-01 1.556360e-02 1.386513e-02 9.288716e-02 
+##          428          429          430          431          432          433          434 
+## 2.613230e-02 1.753016e-02 9.126988e-02 1.434505e-02 6.557410e-03 3.280624e-02 3.351388e-02 
+##          435          436          437          438          439          440          441 
+## 5.178633e-03 2.464815e-02 5.303100e-02 1.166141e-01 8.583580e-03 4.937423e-03 4.096382e-03 
+##          442          443          444          445          446          447          448 
+## 7.604512e-03 5.087457e-03 1.228290e-02 1.006094e-01 7.470820e-02 2.324453e-02 3.430736e-02 
+##          449          450          451          452          453          454          455 
+## 3.054778e-03 8.652469e-03 1.450425e-02 5.397181e-03 2.362007e-02 4.459975e-03 1.287357e-02 
+##          456          457          458          459          460          461          462 
+## 3.450150e-02 1.450369e-03 2.001425e-02 2.115646e-01 1.367957e-02 2.250882e-01 1.385213e-02 
+##          463          464          465          466          467          468          469 
+## 8.489794e-02 1.672593e-02 1.007582e-01 7.398671e-02 1.518653e-04 6.630994e-03 1.343334e-02 
+##          470          471          472          473          474          475          476 
+## 1.019284e-01 2.294432e-01 1.144897e-03 1.771874e-02 7.793734e-03 4.166247e-01 1.594397e-02 
+##          477          478          479          480          481          482          483 
+## 1.303396e-02 3.260064e-02 3.192260e-02 3.847913e-02 2.212525e-02 3.716150e-03 1.727064e-02 
+##          484          485          486          487          488          489          490 
+## 2.409332e-02 1.730814e-02 1.881902e-02 1.002023e-03 2.321020e-02 8.784393e-02 1.167792e-02 
+##          491          492          493          494          495          496          497 
+## 4.027229e-03 2.129786e-02 1.194132e-01 2.090285e-02 2.211420e-01 9.247149e-02 9.936151e-02 
+##          498          499          500          501          502          503          504 
+## 5.707195e-02 3.839755e-02 2.223172e-01 1.178025e-02 2.308487e-01 1.491574e-02 1.462113e-02 
+##          505          506          507          508          509          510          511 
+## 1.381648e-02 5.108653e-03 3.089153e-03 1.850102e-04 1.055465e-01 2.675428e-01 8.469055e-02 
+##          512          513          514          515          516          517          518 
+## 6.264236e-01 1.915758e-02 2.120518e-01 4.440725e-01 1.210299e-01 4.886786e-01 2.086952e-01 
+##          519          520          521          522          523          524          525 
+## 1.978489e-01 9.028499e-01 1.840023e-01 1.541311e-01 2.324687e-01 4.147167e-01 4.151196e-01 
+##          526          527          528          529          530          531          532 
+## 2.642566e-02 4.112168e-01 4.003026e-01 1.251073e-01 2.329527e-01 3.560403e-01 1.014889e-01 
+##          533          534          535          536          537          538          539 
+## 1.059319e-01 3.158365e-01 1.153627e-01 1.502851e-01 8.247179e-01 4.244635e-02 2.547956e-02 
+##          540          541          542          543          544          545          546 
+## 5.621833e-03 3.337151e-02 5.672259e-02 6.033117e-03 6.442495e-03 5.943541e-03 8.641322e-02 
+##          547          548          549          550          551          552          553 
+## 1.711208e-02 2.177331e-01 3.351791e-02 1.425082e-02 1.906797e-01 2.501740e-02 1.430012e-01 
+##          554          555          556          557          558          559          560 
+## 4.211947e-05 8.378354e-02 4.825472e-01 1.844045e-02 4.767503e-03 9.864800e-02 6.167412e-02 
+##          561          562          563          564          565          566          567 
+## 8.062559e-02 6.558890e-02 1.764661e-02 2.339583e-02 1.794613e-06 1.929078e-02 6.228524e-02 
+##          568          569          570          571          572          573          574 
+## 2.605030e-02 2.640437e-03 2.529209e-02 2.440487e-01 9.588060e-04 7.243145e-02 7.119510e-03 
+##          575          576          577          578          579          580          581 
+## 1.609055e-02 1.866595e-02 2.187738e-02 2.558417e-02 8.505313e-03 4.659201e-05 1.132880e-02 
+##          582          583          584          585          586          587          588 
+## 8.919941e-02 3.275269e-03 2.471714e-05 2.454915e-01 1.961372e-01 3.455629e-02 7.087416e-02 
+##          589          590          591          592          593          594          595 
+## 2.547679e-01 9.194605e-03 6.301168e-03 6.120475e-03 3.415944e-02 6.270897e-02 3.497863e-02 
+##          596          597          598          599          600          601          602 
+## 1.413781e-03 1.592378e-01 1.593380e-01 2.499461e-02 9.905598e-03 9.445568e-02 1.336914e-01 
+##          603          604          605          606          607          608          609 
+## 7.455550e-02 6.079316e-02 7.755617e-02 6.653482e-03 4.744468e-03 4.584554e-02 1.088888e-03 
+##          610          611          612          613          614          615          616 
+## 7.138638e-03 4.087155e-01 7.099719e-03 8.162409e-03 4.472976e-01 2.519374e-03 1.604466e-02 
+##          617          618          619          620          621          622          623 
+## 3.633231e-04 9.168831e-02 1.283728e-01 4.577094e-02 2.524430e-01 5.501817e-02 6.539433e-05 
+##          624          625          626          627          628          629          630 
+## 1.596352e-02 2.575658e-02 6.419704e-03 1.325446e-02 1.996733e-03 2.484815e-01 3.556158e-01 
+##          631          632          633          634          635          636          637 
+## 4.076328e-03 1.077435e-01 2.368502e-02 2.544059e-01 9.695598e-04 2.613566e-01 3.981868e-02 
+##          638          639          640          641          642          643          644 
+## 1.070532e-01 8.209321e-02 8.026053e-02 2.253931e-03 4.141816e-03 4.930463e-03 6.416673e-03 
+##          645          646          647          648          649          650          651 
+## 1.048179e-02 2.668846e-01 1.949501e-02 1.195293e-01 9.970748e-02 2.817584e-03 1.032595e-01 
+##          652          653          654          655          656          657          658 
+## 2.587648e-01 2.631713e-01 1.545507e-02 2.611649e-01 1.002149e-02 1.832113e-01 2.600875e-01 
+##          659          660          661          662          663          664          665 
+## 1.019393e-01 4.566643e-01 6.559990e-03 2.755784e-02 2.677732e-02 2.705230e-02 2.520811e-01 
+##          666          667          668          669          670          671          672 
+## 2.462189e-02 1.752062e-02 1.162034e-01 4.402120e-01 2.860813e-02 1.030352e-02 2.457362e-02 
+##          673          674          675          676          677          678          679 
+## 4.508633e-03 1.638519e-02 3.455731e-03 2.612806e-01 3.694635e-02 1.025345e-02 2.728731e-02 
+##          680          681          682          683          684          685          686 
+## 5.925915e-03 1.487725e-02 5.754217e-03 1.382064e-02 1.025475e-02 1.994726e-02 5.952624e-03 
+##          687          688          689          690          691          692          693 
+## 6.293615e-02 3.018591e-02 2.643452e-01 1.214222e-01 2.561619e-01 7.212733e-02 2.644727e-01 
+##          694          695          696          697          698          699          700 
+## 2.707423e-03 5.678562e-03 1.439230e-01 1.042167e-01 4.251607e-01 9.007876e-02 1.000735e-01 
+##          701          702          703          704          705          706          707 
+## 9.866904e-02 1.052990e-01 1.260354e-01 2.675043e-01 1.596187e-02 2.555371e-01 4.019968e-02 
+##          708          709          710          711          712          713          714 
+## 2.687029e-01 1.120144e-01 1.020057e-01 1.667089e-01 1.438157e-01 1.321937e-01 1.019158e-01 
+##          715          716          717          718          719          720          721 
+## 1.812349e-01 4.752429e-02 2.686069e-01 9.710952e-03 1.607843e-01 8.542752e-03 8.460776e-02 
+##          722          723          724          725          726          727          728 
+## 1.488426e-02 1.002468e-02 3.924172e-02 1.861963e-02 1.793435e-02 6.116245e-02 3.038921e-02 
+##          729          730          731          732          733          734          735 
+## 4.625440e-01 3.174707e-02 2.739875e-01 1.336507e-02 6.974226e-03 5.882736e-04 2.653442e-01 
+##          736          737          738          739          740          741          742 
+## 1.141791e-01 3.301292e-02 7.576373e-03 1.848669e-02 2.877381e-02 7.128121e-03 1.468557e-02 
+##          743          744          745          746          747          748          749 
+## 7.517762e-02 5.963854e-02 7.424450e-02 1.792738e-02 7.932000e-04 2.716516e-01 2.719653e-01 
+##          750          751          752          753          754          755          756 
+## 2.720707e-01 2.773104e-01 2.732741e-01 6.828334e-03 1.138213e-01 5.170393e-02 2.218776e-02 
+##          757          758          759          760          761          762          763 
+## 5.554540e-03 3.410946e-03 3.259326e-02 5.674913e-02 3.668382e-05 5.816288e-03 1.240766e-02 
+##          764          765          766          767          768          769          770 
+## 2.244905e-02 1.834123e-02 3.816063e-01 1.284003e-01 5.381311e-01 2.713320e-01 2.422725e-01 
+##          771          772          773          774          775          776          777 
+## 4.355274e-01 3.790047e-02 1.026226e-01 1.068682e-01 7.331736e-01 4.468224e-01 9.198793e-02 
+##          778          779          780          781          782          783          784 
+## 1.298009e-01 2.532667e-01 2.666171e-01 6.826843e-01 4.154358e-01 1.190305e-01 2.552475e-01 
+##          785 
+## 1.334636e-01
+```
+
+
+---
+
+## Predict probabilities on the testing dataset
+
+
+```r
+email_pred &lt;- predict(email_fit, test_data, type = "response") %&gt;%
+  bind_cols(test_data %&gt;% select(spam, time))
+
+email_pred
+```
+
+```
+## # A tibble: 785 × 3
+##       ...1 spam  time               
+##      &lt;dbl&gt; &lt;fct&gt; &lt;dttm&gt;             
+##  1 0.00709 0     2012-01-01 09:55:06
+##  2 0.00181 0     2012-01-01 11:38:32
+##  3 0.0191  0     2012-01-01 21:42:16
+##  4 0.00124 0     2012-01-02 07:12:51
+##  5 0.0121  0     2012-01-02 08:45:36
+##  6 0.170   0     2012-01-02 13:55:03
+##  7 0.0410  0     2012-01-02 17:07:17
+##  8 0.139   0     2012-01-02 21:41:35
+##  9 0.0617  0     2012-01-03 08:02:35
+## 10 0.0983  0     2012-01-03 03:14:51
+## # … with 775 more rows
+```
+
+---
+
+## A closer look at predictions
+
+.pull-left-wide[
+
+```r
+email_pred %&gt;%
+  arrange(...1) %&gt;%
+  print(n = 10)
+```
+
+```
+## # A tibble: 785 × 3
+##        ...1 spam  time               
+##       &lt;dbl&gt; &lt;fct&gt; &lt;dttm&gt;             
+##  1 1.94e-10 0     2012-01-15 17:28:57
+##  2 6.23e-10 0     2012-01-21 14:55:04
+*##  3 1.79e- 6 0     2012-03-05 06:03:44
+##  4 2.01e- 6 0     2012-02-03 09:00:38
+##  5 2.92e- 6 0     2012-02-02 10:48:41
+##  6 2.47e- 5 0     2012-03-08 19:17:44
+*##  7 3.67e- 5 0     2012-03-31 07:13:25
+##  8 4.09e- 5 0     2012-02-02 06:41:43
+##  9 4.21e- 5 0     2012-03-03 14:36:35
+## 10 4.66e- 5 0     2012-03-08 12:11:28
+## # … with 775 more rows
+```
+]
+
+---
+
+## Evaluate the performance
+
+**Receiver operating characteristic (ROC) curve**&lt;sup&gt;+&lt;/sup&gt; which plot true positive rate vs. false positive rate (1 - specificity)
+
+.pull-left[
+
+```r
+email_pred %&gt;%
+  roc_curve(
+    truth = spam,
+    ...1,
+    event_level = "second"
+  ) %&gt;%
+  autoplot()
+```
+]
+.pull-right[
+&lt;img src="prediction_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.footnote[
+.small[
+&lt;sup&gt;+&lt;/sup&gt;Originally developed for operators of military radar receivers, hence the name.
+]
+]
+
+---
+
+## Evaluate the performance
+
+Find the area under the curve:
+
+.pull-left[
+
+```r
+email_pred %&gt;%
+  roc_auc(
+    truth = spam,
+    ...1,
+    event_level = "second"
+  )
+```
+
+```
+## # A tibble: 1 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 roc_auc binary         0.857
+```
+]
+.pull-right[
+&lt;img src="prediction_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
