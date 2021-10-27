@@ -1,0 +1,449 @@
+---
+title: "Logistic Regression"
+subtitle: "<br><br> Psych 101x"
+author: "Amanda D. Perez, PhD"
+output:
+  xaringan::moon_reader:
+    css: ["https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css", "https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css"]
+    lib_dir: libs
+    nature:
+      ratio: "16:9"
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r child = "setup.Rmd"}
+```
+
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(emo)
+xaringanExtra::use_scribble()
+# highlightStyle: solarized-dark
+library(viridis)
+library(tidymodels)
+library(openintro)
+library(ggridges)
+library(foreign)
+library(kableExtra)
+setwd("~/Dropbox/My Mac (Tims-MBP)/Desktop")
+voting <- read.csv("anes_pilot_2016.csv")
+
+voting$vote_binary <- ifelse(voting$vote16dt == 1, 0, ifelse(voting$vote16dt == 2, 1, NA))
+voting$vote_factor <- as.factor(voting$vote_binary)
+levels(voting$vote_factor) <- c("Clinton", "Trump")
+
+voting$gender_factor <- as.factor(voting$gender)
+levels(voting$gender_factor) <- c("Male", "Female")
+
+voting$educ_factor <- as.factor(voting$educ)
+levels(voting$educ_factor) <- c("No HS", "HS Graduate", "Some college",
+                                "AA Degree", "BA Degree", "Post-grad Degree")
+voting$age <- 2016 - voting$birthyr
+set.seed(1234)
+```
+
+class: middle
+
+# Predicting categorical data
+
+---
+
+## Generalized Linear Model 
+
+Linear regression is suitable for outcomes which are continuous numerical scores. 
+
+In practice this requirement is often relaxed slightly, for example for data which are slightly skewed, or where scores are somewhat censored ( e.g. questionnaire scores which have a minimum or maximum).
+
+---
+
+## Generalized Linear Model 
+
+However, for some types of outcomes standard linear models are unsuitable. 
+
+Examples here include binary (zero or one) or count data (i.e. positive integers representing frequencies), or proportions (e.g. proportion of product failures per batch). 
+
+This lecture is primarily concerned with binary outcomes, but many of the same principles apply to these other types of outcome.
+
+---
+
+## Logistic Regression 
+
+In R we fit logistic regression with the `glm()` function which is built into R.
+
+Fitting the model is very similar to linear regression, except we need to specify the `family="binomial"` parameter to let R know what type of data we are using (e.g. binary).
+
+
+---
+
+## American Election Voting Intention Data
+
+We will utilize data from the 2016 American National Election Pilot Survey. We will:  
+
+- Check variable coding & distributions
+- Graphically review bivariate associations
+- Run our logistic regression model
+- Interpret results in terms of odds ratios
+
+---
+
+## American Election Voting Intention Data
+
+The variables we will use will be:
+- `vote`: Whether the respondent voted for Clinton or Trump
+- `gender`: Male or Female
+- `age:` The age (in years) of the respondent
+- `educ`: The highest level of education attained
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+The first step in any statistical analysis should be to perform a visual inspection of the data in order to check for coding errors, outliers, or funky distributions. The variable vote is the dependent variable. We can check the distribution of responses using the count function.
+```{r, echo = FALSE}
+voting %>%
+  na.omit() %>%
+  count(vote_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Vote", "N", "Proportion"), digits = 2)
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = F}
+voting %>%
+  na.omit() %>%
+  count(vote_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Vote", "N", "Proportion"), digits = 2)
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+```{r, echo = FALSE}
+voting %>%
+  na.omit() %>%
+  count(gender_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Gender", "N", "Proportion"), digits = 2)
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = F}
+voting %>%
+  na.omit() %>%
+  count(gender_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Gender", "N", "Proportion"), digits = 2)
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+```{r, echo = FALSE}
+voting %>%
+  na.omit() %>%
+  count(educ_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Education", "N", "Proportion"), digits = 2)
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = F}
+voting %>%
+  na.omit() %>%
+  count(educ_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Education", "N", "Proportion"), digits = 2)
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+We can also check out the distribution of age. We will create a table of summary statistics using the `summarise` function.
+
+Tables are useful, but often graphs are more informative. 
+
+```{r, echo = FALSE}
+voting %>%
+  summarise(Min = min(age, na.rm = TRUE),
+            Max = max(age, na.rm = TRUE),
+            Median = median(age, na.rm = TRUE),
+            Mean = mean(age, na.rm = TRUE),
+            SD = mean(age, na.rm = TRUE)) %>%
+  mutate_all(~round(.,2)) %>%
+  kable(align = rep("c",4))
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = FALSE}
+voting %>%
+  summarise(Min = min(age, na.rm = TRUE),
+            Max = max(age, na.rm = TRUE),
+            Median = median(age, na.rm = TRUE),
+            Mean = mean(age, na.rm = TRUE),
+            SD = mean(age, na.rm = TRUE)) %>%
+  mutate_all(~round(.,2)) %>%
+  kable(align = rep("c",4))
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Plot]
+In the sample, Clinton received more votes than Trump, but not by a large amount.
+```{r, echo = FALSE}
+ggplot(voting %>% na.omit(), aes(vote_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Vote", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = FALSE}
+ggplot(voting %>% na.omit(), aes(vote_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Vote", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r, echo = FALSE}
+ggplot(voting %>% na.omit(), aes(gender_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Gender", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = FALSE}
+ggplot(voting %>% na.omit(), aes(gender_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Gender", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r, echo = FALSE}
+ggplot(voting %>% na.omit(), aes(educ_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Education", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = FALSE}
+ggplot(voting %>% na.omit(), aes(educ_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Education", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data: More
+
+**Bivariate Summaries:** Prior to moving on to the fully specified model, it is advisable to first examine the simple associations between the outcome and each individual predictor. Doing so can help avoid surprises in the final model. 
+
+---
+
+## Inspecting our Data: More
+
+For example, if there is no simple relationship apparent in the data, we shouldn’t be taken aback when that predictor is not significant in the model. If there is a simple association, but it disappears in the full model, then we have evidence that one of the other variables is a confounder. Upon controlling for that factor, the relationship we initially observed is explained away.
+Graphs are again helpful. When the outcome is categorical and the predictor is also categorical, a grouped bar graph is informative. 
+
+
+---
+
+## Inspecting our Data: More
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r, echo = FALSE}
+ggplot(voting %>% na.omit(), aes(gender_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Gender", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = FALSE}
+ggplot(voting %>% na.omit(), aes(gender_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Gender", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data: More
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r, echo = FALSE}
+ggplot(voting %>% na.omit(), aes(educ_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Education", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = FALSE}
+ggplot(voting %>% na.omit(), aes(educ_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Education", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Running the Model
+
+To fit a logistic regression in R, we will use the `glm` function, which stands for Generalized Linear Model. Within this function, write the dependent variable, followed by `~`, and then the independent variables separated by `+`’s. When the family is specified as `binomial`, R defaults to fitting a logit model. Note that we are also treating `educ` as a numeric variable here.
+
+```{r, eval = F}
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %>% 
+  tidy(exponentiate = T, conf.int = T)
+```
+
+
+---
+
+## Running the Model
+
+The `broom` package contains useful functions, like `tidy()`, for viewing the output from common models. The `conf.int = T` argument requests confidence intervals.
+
+Because `gender_factor` is a factor variable, R will automatically create dummy variables for us. `educ` is an ordered categorical variable, we opt here to treat its effect as linear. The last variable is `age`. 
+
+```{r, eval = F}
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %>% 
+  tidy(exponentiate = T, conf.int = T) 
+```
+
+
+---
+
+## Running the Model
+
+.panelset[
+.panel[.panel-name[Table]
+To best interpret the logistic regression, we want to look at our results in terms of odds ratios by setting `exponentiate = T` in the `tidy()` function.
+
+We find that gender and age have significant effects.
+
+```{r, echo = FALSE}
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %>% #<<
+  tidy(exponentiate = T, conf.int = T) %>% #<<
+  mutate_if(is.numeric, ~round(.,2)) %>%
+  kable(align = c("l", rep("c", 6)))
+```
+]
+.panel[.panel-name[Code]
+```{r, eval = F}
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %>% #<<
+  tidy(exponentiate = T, conf.int = T) %>% #<<
+  mutate_if(is.numeric, ~round(.,2)) %>%
+  kable(align = c("l", rep("c", 6)))
+```
+]
+]
+
+---
+
+## Odds Ratio
+
+The coefficients returned by default in logistic regression models are difficult to interpret intuitively, and hence it is common to report odds ratios instead. 
+
+**An odds ratio less than one** means that an increase in x leads to a decrease in the odds that y=1. 
+
+**An odds ratio greater than one** means that an increase in x leads to an increase in the odds that  y=1. 
+
+---
+
+## % Change
+
+In general, the percent change in the odds given a one-unit change in the predictor can be determined as:
+
+**% Change in Odds=100(OR−1)**
+
+For example, the odds of voting for Trump are 100(.51−1)= 49% **lower** for females compared to males. In addition, each one year increase in age leads to a 100(1.02−1)= 2% **increased odd** in voting for Trump.
+
+
+

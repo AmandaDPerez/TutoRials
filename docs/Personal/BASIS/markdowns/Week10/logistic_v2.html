@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Logistic Regression</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amanda D. Perez, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/fabric/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Logistic Regression
+## <br><br> Psych 101x
+### Amanda D. Perez, PhD
+
+---
+
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;img src = "ucbext.png"&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+class: middle
+
+# Predicting categorical data
+
+---
+
+## Generalized Linear Model 
+
+Linear regression is suitable for outcomes which are continuous numerical scores. 
+
+In practice this requirement is often relaxed slightly, for example for data which are slightly skewed, or where scores are somewhat censored ( e.g. questionnaire scores which have a minimum or maximum).
+
+---
+
+## Generalized Linear Model 
+
+However, for some types of outcomes standard linear models are unsuitable. 
+
+Examples here include binary (zero or one) or count data (i.e. positive integers representing frequencies), or proportions (e.g. proportion of product failures per batch). 
+
+This lecture is primarily concerned with binary outcomes, but many of the same principles apply to these other types of outcome.
+
+---
+
+## Logistic Regression 
+
+In R we fit logistic regression with the `glm()` function which is built into R.
+
+Fitting the model is very similar to linear regression, except we need to specify the `family="binomial"` parameter to let R know what type of data we are using (e.g. binary).
+
+
+---
+
+## American Election Voting Intention Data
+
+We will utilize data from the 2016 American National Election Pilot Survey. We will:  
+
+- Check variable coding &amp; distributions
+- Graphically review bivariate associations
+- Run our logistic regression model
+- Interpret results in terms of odds ratios
+
+---
+
+## American Election Voting Intention Data
+
+The variables we will use will be:
+- `vote`: Whether the respondent voted for Clinton or Trump
+- `gender`: Male or Female
+- `age:` The age (in years) of the respondent
+- `educ`: The highest level of education attained
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+The first step in any statistical analysis should be to perform a visual inspection of the data in order to check for coding errors, outliers, or funky distributions. The variable vote is the dependent variable. We can check the distribution of responses using the count function.
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Vote &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; N &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Proportion &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Clinton &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 214 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.56 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Trump &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 170 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.44 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+voting %&gt;%
+  na.omit() %&gt;%
+  count(vote_factor) %&gt;%
+  mutate(prop = prop.table(n)) %&gt;%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Vote", "N", "Proportion"), digits = 2)
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Gender &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; N &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Proportion &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 186 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.48 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Female &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 198 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.52 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+voting %&gt;%
+  na.omit() %&gt;%
+  count(gender_factor) %&gt;%
+  mutate(prop = prop.table(n)) %&gt;%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Gender", "N", "Proportion"), digits = 2)
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Education &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; N &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Proportion &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; No HS &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.07 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HS Graduate &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 129 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.34 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Some college &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; AA Degree &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.08 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BA Degree &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Post-grad Degree &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.12 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+voting %&gt;%
+  na.omit() %&gt;%
+  count(educ_factor) %&gt;%
+  mutate(prop = prop.table(n)) %&gt;%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Education", "N", "Proportion"), digits = 2)
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Table]
+We can also check out the distribution of age. We will create a table of summary statistics using the `summarise` function.
+
+Tables are useful, but often graphs are more informative. 
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Min &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Max &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Median &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Mean &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; SD &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 48 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 48.06 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 48.06 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+voting %&gt;%
+  summarise(Min = min(age, na.rm = TRUE),
+            Max = max(age, na.rm = TRUE),
+            Median = median(age, na.rm = TRUE),
+            Mean = mean(age, na.rm = TRUE),
+            SD = mean(age, na.rm = TRUE)) %&gt;%
+  mutate_all(~round(.,2)) %&gt;%
+  kable(align = rep("c",4))
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Plot]
+In the sample, Clinton received more votes than Trump, but not by a large amount.
+&lt;img src="logistic_v2_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+ggplot(voting %&gt;% na.omit(), aes(vote_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Vote", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Plot]
+&lt;img src="logistic_v2_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+ggplot(voting %&gt;% na.omit(), aes(gender_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Gender", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data
+
+.panelset[
+.panel[.panel-name[Plot]
+&lt;img src="logistic_v2_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+ggplot(voting %&gt;% na.omit(), aes(educ_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Education", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data: More
+
+**Bivariate Summaries:** Prior to moving on to the fully specified model, it is advisable to first examine the simple associations between the outcome and each individual predictor. Doing so can help avoid surprises in the final model. 
+
+---
+
+## Inspecting our Data: More
+
+For example, if there is no simple relationship apparent in the data, we shouldn’t be taken aback when that predictor is not significant in the model. If there is a simple association, but it disappears in the full model, then we have evidence that one of the other variables is a confounder. Upon controlling for that factor, the relationship we initially observed is explained away.
+Graphs are again helpful. When the outcome is categorical and the predictor is also categorical, a grouped bar graph is informative. 
+
+
+---
+
+## Inspecting our Data: More
+
+.panelset[
+.panel[.panel-name[Plot]
+&lt;img src="logistic_v2_files/figure-html/unnamed-chunk-16-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+ggplot(voting %&gt;% na.omit(), aes(gender_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Gender", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Inspecting our Data: More
+
+.panelset[
+.panel[.panel-name[Plot]
+&lt;img src="logistic_v2_files/figure-html/unnamed-chunk-18-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+ggplot(voting %&gt;% na.omit(), aes(educ_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Education", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+]
+]
+
+---
+
+## Running the Model
+
+To fit a logistic regression in R, we will use the `glm` function, which stands for Generalized Linear Model. Within this function, write the dependent variable, followed by `~`, and then the independent variables separated by `+`’s. When the family is specified as `binomial`, R defaults to fitting a logit model. Note that we are also treating `educ` as a numeric variable here.
+
+
+```r
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %&gt;% 
+  tidy(exponentiate = T, conf.int = T)
+```
+
+
+---
+
+## Running the Model
+
+The `broom` package contains useful functions, like `tidy()`, for viewing the output from common models. The `conf.int = T` argument requests confidence intervals.
+
+Because `gender_factor` is a factor variable, R will automatically create dummy variables for us. `educ` is an ordered categorical variable, we opt here to treat its effect as linear. The last variable is `age`. 
+
+
+```r
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %&gt;% 
+  tidy(exponentiate = T, conf.int = T) 
+```
+
+
+---
+
+## Running the Model
+
+.panelset[
+.panel[.panel-name[Table]
+To best interpret the logistic regression, we want to look at our results in terms of odds ratios by setting `exponentiate = T` in the `tidy()` function.
+
+We find that gender and age have significant effects.
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; p.value &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; conf.high &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.64 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.41 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; -1.06 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.29 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.28 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.45 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gender_factorFemale &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.51 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.21 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; -3.16 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.34 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.77 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; educ &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.89 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.07 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; -1.66 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.10 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.78 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.02 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.02 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.01 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2.97 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.01 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.03 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+*glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %&gt;%
+* tidy(exponentiate = T, conf.int = T) %&gt;%
+  mutate_if(is.numeric, ~round(.,2)) %&gt;%
+  kable(align = c("l", rep("c", 6)))
+```
+]
+]
+
+---
+
+## Odds Ratio
+
+The coefficients returned by default in logistic regression models are difficult to interpret intuitively, and hence it is common to report odds ratios instead. 
+
+**An odds ratio less than one** means that an increase in x leads to a decrease in the odds that y=1. 
+
+**An odds ratio greater than one** means that an increase in x leads to an increase in the odds that  y=1. 
+
+---
+
+## % Change
+
+In general, the percent change in the odds given a one-unit change in the predictor can be determined as:
+
+**% Change in Odds=100(OR−1)**
+
+For example, the odds of voting for Trump are 100(.51−1)= 49% **lower** for females compared to males. In addition, each one year increase in age leads to a 100(1.02−1)= 2% **increased odd** in voting for Trump.
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

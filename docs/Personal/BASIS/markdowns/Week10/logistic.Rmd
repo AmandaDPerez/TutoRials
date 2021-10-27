@@ -22,12 +22,134 @@ library(tidyverse)
 library(emo)
 xaringanExtra::use_scribble()
 # highlightStyle: solarized-dark
-
+library(viridis)
 library(tidymodels)
 library(openintro)
 library(ggridges)
+library(foreign)
+setwd("~/Dropbox/My Mac (Tims-MBP)/Desktop")
+
+voting <- read.csv("anes_pilot_2016.csv")
+voting$vote16dt #1 = clinton, 2 = trump
+
+voting$vote_binary <- ifelse(voting$vote16dt == 1, 0, ifelse(voting$vote16dt == 2, 1, NA))
+voting$vote_factor <- as.factor(voting$vote_binary)
+levels(voting$vote_factor) <- c("Clinton", "Trump")
+
+voting$gender_factor <- as.factor(voting$gender)
+levels(voting$gender_factor) <- c("Male", "Female")
+
+voting$educ_factor <- as.factor(voting$educ)
+levels(voting$educ_factor) <- c("No HS", "HS Graduate", "Some college",
+                                "AA Degree", "BA Degree", "Post-grad Degree")
 set.seed(1234)
 ```
+
+
+
+
+```{r}
+voting %>%
+  na.omit() %>%
+  count(vote_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Vote", "N", "Proportion"), digits = 3)
+```
+
+
+```{r}
+voting %>%
+  na.omit() %>%
+  count(gender_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Gender", "N", "Proportion"), digits = 3)
+```
+
+```{r}
+voting %>%
+  na.omit() %>%
+  count(educ_factor) %>%
+  mutate(prop = prop.table(n)) %>%
+  kable(align = c("l", "c", "c"),
+  col.names = c("Education", "N", "Proportion"), digits = 2)
+```
+
+
+```{r}
+voting$age <- 2016 - voting$birthyr
+voting %>%
+  summarise(Min = min(age, na.rm = TRUE),
+            Max = max(age, na.rm = TRUE),
+            Median = median(age, na.rm = TRUE),
+            Mean = mean(age, na.rm = TRUE),
+            SD = mean(age, na.rm = TRUE)) %>%
+  mutate_all(~round(.,2)) %>%
+  kable(align = rep("c",4))
+```
+
+
+```{r}
+ggplot(voting %>% na.omit(), aes(vote_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Vote", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(voting %>% na.omit(), aes(gender_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Gender", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(voting %>% na.omit(), aes(educ_factor, y = ..prop.., group = 1)) +
+  geom_bar(fill = "firebrick", color = "black") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
+  labs(x = "Education", y = "Proportion") +
+  ylim(0,1) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(voting %>% na.omit(), aes(gender_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Gender", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(voting %>% na.omit(), aes(educ_factor, y = ..prop.., group = vote_binary, fill = vote_factor)) +
+  geom_bar(position = "dodge") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -1,
+            position = position_dodge(width = 1)) +
+  labs(x = "Education", y = "Proportion", fill = "Vote") +
+  ylim(0,1) +
+  scale_fill_viridis(option = "mako", discrete = TRUE) +
+  theme_minimal()
+```
+
+
+```{r}
+glm(vote_binary ~ gender_factor + educ + age, family = "binomial", data = voting) %>%
+  tidy(exponentiate = T, conf.int = T) %>%
+  mutate_if(is.numeric, ~round(.,2)) %>%
+  kable(align = c("l", rep("c", 6)))
+```
+
+
+
+
 
 class: middle
 
