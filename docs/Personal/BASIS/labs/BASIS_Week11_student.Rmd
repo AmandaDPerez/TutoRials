@@ -1,7 +1,10 @@
 ---
 title: "Week 11 Lab"
-author: "Prof. Amanda D. Perez, PhD"
-output: rmdformats::material
+author: "YOUR NAME HERE"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2 
 ---
 
 # Cross Validation: The Office Data
@@ -119,7 +122,7 @@ ANSWER:
 
 Fill in the blank in order to predict the outcome using the model from `office_train` applied to the `office_test` data.
 
-```{r, error= TRUE}
+```{r, error = TRUE}
 office_predictions <- predict(model.1, newdata = ___) 
 ```
 
