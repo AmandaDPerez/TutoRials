@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Cross-Validation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amanda D. Perez, PhD" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/fabric/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="https://amandadperez.github.io/TutoRials/docs/Personal/BASIS/slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Cross-Validation
+## <br><br> Psych 101x
+### Amanda D. Perez, PhD
+
+---
+
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;img src = "ucbext.png"&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+class: middle
+
+# Data and exploration
+
+---
+
+background-image: url("img/the-office.jpeg")
+class: middle
+
+---
+
+## Data
+
+
+```r
+office_ratings &lt;- read_csv("data/office_ratings.csv")
+office_ratings
+```
+
+```
+## # A tibble: 188 × 6
+##    season episode title             imdb_rating total_votes air_date  
+##     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;       &lt;dbl&gt; &lt;date&gt;    
+##  1      1       1 Pilot                     7.6        3706 2005-03-24
+##  2      1       2 Diversity Day             8.3        3566 2005-03-29
+##  3      1       3 Health Care               7.9        2983 2005-04-05
+##  4      1       4 The Alliance              8.1        2886 2005-04-12
+##  5      1       5 Basketball                8.4        3179 2005-04-19
+##  6      1       6 Hot Girl                  7.8        2852 2005-04-26
+##  7      2       1 The Dundies               8.7        3213 2005-09-20
+##  8      2       2 Sexual Harassment         8.2        2736 2005-09-27
+##  9      2       3 Office Olympics           8.4        2742 2005-10-04
+## 10      2       4 The Fire                  8.4        2713 2005-10-11
+## # … with 178 more rows
+```
+
+.footnote[
+.small[
+Source: The data come from [data.world](https://data.world/anujjain7/the-office-imdb-ratings-dataset), by way of [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-17/readme.md). 
+]
+]
+
+---
+
+## IMDB ratings
+
+.panelset[
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Code&lt;/div&gt;
+
+```r
+ggplot(office_ratings, aes(x = imdb_rating)) +
+  geom_histogram(binwidth = 0.25) +
+  labs(
+    title = "The Office ratings",
+    x = "IMDB Rating"
+  )
+```
+
+&lt;/div&gt;
+
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Plot&lt;/div&gt;
+
+&lt;img src="crossvalidation_files/figure-html/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+&lt;/div&gt;
+]
+
+---
+
+## IMDB ratings vs. number of votes
+
+.panelset[
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Code&lt;/div&gt;
+
+```r
+ggplot(office_ratings, aes(x = total_votes, y = imdb_rating, color = season)) +
+  geom_jitter(alpha = 0.7) +
+  labs(
+    title = "The Office ratings",
+    x = "Total votes",
+    y = "IMDB Rating",
+    color = "Season"
+  )
+```
+
+&lt;/div&gt;
+
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Plot&lt;/div&gt;
+
+&lt;img src="crossvalidation_files/figure-html/unnamed-chunk-4-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+
+&lt;/div&gt;
+]
+
+---
+
+## Outliers
+
+.panelset[
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Code&lt;/div&gt;
+
+```r
+ggplot(office_ratings, aes(x = total_votes, y = imdb_rating)) +
+  geom_jitter() +
+  gghighlight(total_votes &gt; 4000, label_key = title) +
+  labs(
+    title = "The Office ratings",
+    x = "Total votes",
+    y = "IMDB Rating"
+  )
+```
+
+&lt;/div&gt;
+
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Plot&lt;/div&gt;
+
+&lt;img src="crossvalidation_files/figure-html/unnamed-chunk-5-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+
+&lt;/div&gt;
+]
+
+.footnote[
+.small[
+If you like the [Dinner Party](https://www.imdb.com/title/tt1031477/) episode, I highly recommend this ["oral history"](https://www.rollingstone.com/tv/tv-features/that-one-night-the-oral-history-of-the-greatest-office-episode-ever-629472/) of the episode published on Rolling Stone magazine.
+]
+]
+
+---
+
+## IMDB ratings vs. seasons
+
+.panelset[
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Code&lt;/div&gt;
+
+```r
+ggplot(office_ratings, aes(x = factor(season), y = imdb_rating, color = season)) +
+  geom_boxplot() +
+  geom_jitter() +
+  guides(color = "none") +
+  labs(
+    title = "The Office ratings",
+    x = "Season",
+    y = "IMDB Rating"
+  )
+```
+
+&lt;/div&gt;
+
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Plot&lt;/div&gt;
+
+&lt;img src="crossvalidation_files/figure-html/unnamed-chunk-6-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+
+&lt;/div&gt;
+]
+
+---
+
+class: middle
+
+# Modeling
+
+---
+
+## Train / test
+
+- Create an initial split index
+
+
+```r
+set.seed(1234) #set the seed so we can all reproduce results
+office_split &lt;- createDataPartition(office_ratings$imdb_rating, p = .8, list = FALSE, times = 1)
+```
+
+--
+.pull-left[
+- Save training data
+
+```r
+office_train &lt;- office_ratings[office_split, ]
+dim(office_train)
+```
+
+```
+## [1] 152   6
+```
+]
+
+--
+.pull-right[
+- Save testing data
+
+```r
+office_test  &lt;- office_ratings[-office_split, ]
+dim(office_test)
+```
+
+```
+## [1] 36  6
+```
+]
+
+
+---
+
+## Fit model with training data
+
+.panelset[
+.panel[.panel-name[Code]
+
+```r
+office_fit &lt;- lm(imdb_rating ~ season + total_votes, data = office_train)
+```
+]
+.panel[.panel-name[Output]
+.small[
+
+```r
+tidy(office_fit) 
+```
+
+```
+## # A tibble: 3 × 5
+##   term         estimate std.error statistic  p.value
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)  7.61     0.144         52.8  2.39e-98
+## 2 season      -0.0357   0.0145        -2.45 1.53e- 2
+## 3 total_votes  0.000396 0.0000421      9.42 8.02e-17
+```
+]
+]
+]
+
+---
+
+class: middle
+
+# Evaluate model
+
+---
+
+## Make predictions for training data
+
+
+```r
+office_train_pred &lt;- predict(office_fit, office_train) %&gt;%
+  bind_cols(office_train %&gt;% select(imdb_rating, title))
+names(office_train_pred)[1] &lt;- "Prediction"
+office_train_pred
+```
+
+```
+## # A tibble: 152 × 3
+##    Prediction imdb_rating title            
+##         &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;            
+##  1       8.98         8.3 Diversity Day    
+##  2       8.75         7.9 Health Care      
+##  3       8.71         8.1 The Alliance     
+##  4       8.83         8.4 Basketball       
+##  5       8.70         7.8 Hot Girl         
+##  6       8.62         8.2 Sexual Harassment
+##  7       8.62         8.4 Office Olympics  
+##  8       8.61         8.4 The Fire         
+##  9       8.55         8.2 Halloween        
+## 10       8.55         8.2 The Fight        
+## # … with 142 more rows
+```
+
+---
+
+## R-squared
+
+Percentage of variability in the IMDB ratings explained by the model
+
+
+```r
+R2(office_train_pred$Prediction, office_train$imdb_rating)
+```
+
+```
+## [1] 0.472973
+```
+
+--
+
+.question[
+Are models with high or low `\(R^2\)` more preferable?
+]
+
+---
+
+## RMSE
+
+An alternative model performance statistic: **root mean square error**
+
+$$ RMSE = \sqrt{\frac{\sum_{i = 1}^n (y_i - \hat{y}_i)^2}{n}} $$
+
+--
+
+
+```r
+RMSE(office_train_pred$Prediction, office_train$imdb_rating)
+```
+
+```
+## [1] 0.3851412
+```
+
+--
+
+.question[
+Are models with high or low RMSE are more preferable?
+]
+
+---
+
+## Interpreting RMSE
+
+.question[
+Is this RMSE considered low or high?
+]
+
+
+```r
+RMSE(office_train_pred$Prediction, office_train$imdb_rating)
+```
+
+```
+## [1] 0.3851412
+```
+
+--
+
+
+```r
+office_train %&gt;%
+  summarise(min = min(imdb_rating), max = max(imdb_rating))
+```
+
+```
+## # A tibble: 1 × 2
+##     min   max
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1   6.7   9.7
+```
+
+---
+
+class: middle
+
+.hand[
+.light-blue[
+but, really, who cares about predictions on .pink[training] data?
+]
+]
+
+---
+
+## Make predictions for testing data
+
+
+```r
+office_test_pred &lt;- predict(office_fit, office_test) %&gt;%
+  bind_cols(office_test %&gt;% select(imdb_rating, title))
+names(office_test_pred)[1] &lt;- "Prediction"
+office_test_pred
+```
+
+```
+## # A tibble: 36 × 3
+##    Prediction imdb_rating title             
+##         &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;             
+##  1       9.04         7.6 Pilot             
+##  2       8.81         8.7 The Dundies       
+##  3       8.58         8.6 The Client        
+##  4       8.60         8.6 Booze Cruise      
+##  5       8.49         8.4 Drug Testing      
+##  6       8.39         8.5 Back from Vacation
+##  7       8.54         8.8 Business School   
+##  8       8.51         8.9 The Negotiation   
+##  9       8.46         8.8 Safety Training   
+## 10       8.33         8.5 Launch Party      
+## # … with 26 more rows
+```
+
+---
+
+## Evaluate performance on testing data
+
+- RMSE of model fit to testing data
+
+
+```r
+RMSE(office_test_pred$Prediction, office_test$imdb_rating)
+```
+
+```
+## [1] 0.4862157
+```
+
+- `\(R^2\)` of model fit to testing data
+
+
+```r
+R2(office_test_pred$Prediction, office_test$imdb_rating)
+```
+
+```
+## [1] 0.2549454
+```
+
+---
+
+## Training vs. testing
+
+&lt;br&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; metric &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; train &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; test &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; comparison &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; RMSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.385 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.486 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; RMSE lower for training &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; R-squared &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.473 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.255 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; R-squared higher for training &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Evaluating performance on training data
+
+-  The training set does not have the capacity to be a good arbiter of performance.
+
+--
+- It is not an independent piece of information; predicting the training set can only reflect what the model already knows.
+
+--
+- Suppose you give a class a test, then give them the answers, then provide the same test. The student scores on the second test do not accurately reflect what they know about the subject; these scores would probably be higher than their results on the first test.
+
+.footnote[
+.small[
+Source: [tidymodels.org](https://www.tidymodels.org/start/resampling/)
+]
+]
+
+---
+
+class: middle
+
+# Cross validation
+
+---
+
+## Cross validation
+
+More specifically, **v-fold cross validation**:
+
+- Shuffle your data v partitions
+- Use 1 partition for validation, and the remaining v-1 partitions for training
+- Repeat v times
+
+.footnote[
+.small[
+You might also heard of this referred to as k-fold cross validation.
+]
+]
+
+---
+
+## Cross validation
+
+&lt;img src="img/cross-validation.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Set out Cross-Validation Specifications
+
+.pull-left[
+
+```r
+set.seed(345)
+ctrl_specs &lt;- trainControl(method = "cv", number = 5, 
+                           savePredictions = "all")
+```
+]
+.pull-right[
+&lt;img src="img/cross-validation.png" width="100%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+---
+
+## Fit resamples
+
+.pull-left[
+
+```r
+set.seed(456)
+office_fit_rs &lt;- train(imdb_rating ~ season + total_votes,
+                 data = office_train, method = "lm", trControl = ctrl_specs)
+```
+]
+.pull-right[
+&lt;img src="img/cross-validation-animated.gif" width="100%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+---
+
+## Collect CV metrics
+
+
+```r
+print(office_fit_rs)
+```
+
+```
+## Linear Regression 
+## 
+## 152 samples
+##   2 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 121, 121, 122, 122, 122 
+## Resampling results:
+## 
+##   RMSE       Rsquared   MAE      
+##   0.4107396  0.4664241  0.3131857
+## 
+## Tuning parameter 'intercept' was held constant at a value of TRUE
+```
+
+---
+
+## Deeper look into CV metrics
+
+
+
+```r
+office_fit_rs$resample
+```
+
+```
+##        RMSE  Rsquared       MAE Resample
+## 1 0.5021508 0.5622750 0.3301441    Fold1
+## 2 0.4294949 0.2720416 0.3216769    Fold2
+## 3 0.3559782 0.5214181 0.2895953    Fold3
+## 4 0.3623049 0.6037349 0.3006709    Fold4
+## 5 0.4037689 0.3726508 0.3238410    Fold5
+```
+
+
+---
+
+## See output in terms of regression coefficients
+
+
+```r
+summary(office_fit_rs)
+```
+
+```
+## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.27240 -0.21081  0.01549  0.26157  1.13582 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.607e+00  1.441e-01  52.794   &lt;2e-16 ***
+## season      -3.565e-02  1.453e-02  -2.454   0.0153 *  
+## total_votes  3.963e-04  4.206e-05   9.421   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.389 on 149 degrees of freedom
+## Multiple R-squared:  0.473,	Adjusted R-squared:  0.4659 
+## F-statistic: 66.86 on 2 and 149 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+## Assess variable importance of the predictors
+
+
+```r
+varImp(office_fit_rs)
+```
+
+```
+## lm variable importance
+## 
+##             Overall
+## total_votes     100
+## season            0
+```
+
+---
+
+
+## Apply our model to the office_test dataframe
+
+
+
+```r
+office_predictions &lt;- predict(office_fit_rs, newdata = office_test) 
+```
+
+---
+
+## Evaluate Model Metrics for Testing Data
+
+
+
+```r
+data.frame(R2 = R2(office_predictions, office_test$imdb_rating),
+            RMSE = RMSE(office_predictions, office_test$imdb_rating))
+```
+
+```
+##          R2      RMSE
+## 1 0.2549454 0.4862157
+```
+
+---
+
+## Compare our Training Metrics to our Testing Metrics
+
+
+
+```r
+data.frame(office_fit_rs$results[3],
+            R2_testing = R2(office_predictions, office_test$imdb_rating),
+            office_fit_rs$results[2],
+            RMSE_testing = RMSE(office_predictions, office_test$imdb_rating))
+```
+
+```
+##    Rsquared R2_testing      RMSE RMSE_testing
+## 1 0.4664241  0.2549454 0.4107396    0.4862157
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
