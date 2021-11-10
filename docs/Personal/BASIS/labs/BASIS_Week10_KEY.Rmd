@@ -1,0 +1,275 @@
+---
+title: "Week 10 Lab - KEY"
+author: "Prof. Amanda D. Perez, PhD"
+output: rmdformats::material
+---
+
+# Cross Validation: The Office Data
+
+```{r, warning = F, message = F}
+library(tidyverse)
+```
+
+For this section you will be using Mario Kart Record data from TidyTuesday. See <https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-05-25> for more detailed information about the dataset.
+
+```{r, warning = F, message = F}
+mario <- read_csv("data/the_office.csv") 
+
+glimpse(mario)
+```
+
+## Exercise 1 - 
+
+In this first exercise we will be running a simple regression to predict `time` from `track`. As you can see below, there are `13` different tracks. Unlike with t-tests, we do NOT have to limit it to two levels. However, we do need to think about what our reference group will be. Generally, the reference group is either a baseline (because all other levels will be compared to it) or it is the level you are most interested in. 
+
+
+
+```{r}
+mario$track <- as.factor(mario$track)
+levels(mario$track)
+```
+
+Right now, `Banshee Boardwalk` is the default reference level. We know this because it is the first level that appears above. I want to change the reference level to `Bowser's Castle`. I will do that in the below code.
+
+```{r}
+mario$track <- relevel(mario$track, ref = "Bowser's Castle")
+```
+
+Below, I will confirm that `Bowser's Castle` is the new reference level.
+
+```{r}
+levels(mario$track)
+```
+
+
+`Bowser's Castle` shows up first and is now our reference level. We can now move on to our simple regression. Fill in the formula below to run a regression predicting `time` (the DV) from `track` (the IV). When you have correctly specified the `lm()` model, the `summary(mod.mario.simple)` will run without error.
+
+```{r}
+mod.mario.simple <- lm(time ~ track, data = mario)
+summary(mod.mario.simple)
+```
+
+Your job is to interpret:
+
+**The intercept**
+[RESPONSE HERE]
+
+
+**All significant slopes**
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+
+
+**The R-Squared**
+[RESPONSE HERE]
+
+## Exercise 2 - 
+
+Next we will visualize the regression model. I have provided a basic graph for your below. Your job is to update the graph and: fill each bar by track, add a theme, hide the legend using `guides` argument, label the x and y axes, and add a title. Interpret what you see.
+
+```{r}
+ggplot(mario, aes(track, time, fill = track)) +
+  stat_summary(fun = "mean", geom = "bar") +
+  coord_flip() +
+  labs(x = "Track", y = "Time in seconds", title = "Mario Kart Track Times") +
+  guides(fill = "none") +
+  theme_minimal()
+```
+
+## Exercise 3 - 
+
+Now that we have run a simple regression (regression with just one IV) we want to now run a multiple regression. We want to run a new model that will add on a second IV: `type`
+
+```{r}
+mario$type <- as.factor(mario$type)
+levels(mario$type)
+```
+
+In this case, the reference level is `Single Lap`. I like this and will not change the reference level.
+
+Now, it is time to build our multiple regression model. We will be predicting `time` (DV) from `track` (IV 1) AND `type` (IV 2). When you have correctly specified the `lm()` model, the `summary(mod.mario.multiple)` will run without error.
+
+```{r}
+mod.mario.multiple <- lm(time ~ track + type, data = mario)
+summary(mod.mario.multiple)
+```
+
+Your job is to interpret:
+
+**The intercept**
+[RESPONSE HERE]
+
+
+**All significant slopes**
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+
+**The R-Squared**
+[RESPONSE HERE]
+
+## Exercise 4 - 
+
+Next we will visualize the multiple regression model. I have provided a basic graph for your below. Your job is to update the graph and: fill each bar by type, add a theme, and label the x and y axes, label the fill title (legend), and add a title. Interpret what you see.
+
+```{r}
+ggplot(mario, aes(track, time, fill = type) )+
+  stat_summary(fun = "mean", geom = "bar", position = "dodge") +
+  coord_flip() +
+  labs(x = "Track", y = "Time in seconds", fill = "Type", title = "Mario Kart Track Times")  +
+  theme_minimal()
+```
+
+
+# Simple & Multiple Regression: Fishing Data
+
+```{r, warning = F, message = F}
+library(tidyverse)
+```
+
+For this section you will be using Great Lakes Fishery Commission data from TidyTuesday. See <https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-06-08> for more detailed information about the dataset.
+
+```{r, warning = F, message = F}
+set.seed(5678)
+fishing <- read_csv("data/fishing.csv") %>%
+  sample_n(8000)
+
+glimpse(fishing)
+```
+
+## Exercise 5 - 
+
+We will be running a simple regression to predict `grand_total` from `species`. As you can see below, there are `51` different species. Unlike the previous simple regression, I am only interested in 5 different fish species: Buffalo, Crappie, Herring, White Bass, and Yellow Perch. 
+
+
+```{r}
+fishing$species <- as.factor(fishing$species)
+levels(fishing$species)
+```
+
+Below I am filtering the data to only include these levels:
+
+```{r}
+fishing <- fishing %>%
+  filter(species == "Buffalo" | species == "Crappie" | species == "Herring" | species == "White Bass" | species == "Yellow Perch")
+
+fishing$species <- droplevels(fishing$species)
+levels(fishing$species)
+```
+
+
+Above we see that `Buffalo` is the reference level. However, I want `White Bass` to be the reference level:
+
+```{r}
+fishing$species <- relevel(fishing$species, ref = "White Bass")
+```
+
+Below, I will confirm that `White Bass` is the new reference level.
+
+```{r}
+levels(fishing$species)
+```
+
+
+`White Bass` shows up first and is now our reference level. We can now move on to our simple regression. Fill in the formula below to run a regression predicting `grand_total` (the DV) from `species` (the IV). When you have correctly specified the `lm()` model, the `summary(mod.fish.simple)` will run without error.
+
+```{r}
+mod.fish.simple <- lm(grand_total ~ species, data = fishing)
+summary(mod.fish.simple)
+```
+
+Your job is to interpret:
+
+**The intercept**
+[RESPONSE HERE]
+
+
+**All significant slopes**
+[RESPONSE HERE]
+[RESPONSE HERE]
+
+
+**The R-Squared**
+[RESPONSE HERE]
+
+## Exercise 6 - 
+
+Next we will visualize the regression model. This time, you must write your own ggplot code. Make sure you: fill each bar by species, add a theme, hide the legend using `guides` argument, label the x and y axes, and add a title. Interpret what you see.
+
+```{r, warning = F, message = F}
+ggplot(fishing, aes(species, grand_total, fill = species)) +
+  stat_summary(fun = "mean", geom = "bar")  +
+  labs(x = "Fish Species", y = "Mean Grand Total", title = "Grand Total Fish Species") +
+  guides(fill = "none") +
+  theme_minimal()
+```
+
+## Exercise 7 - 
+
+Now that we have run a simple regression (regression with just one IV) we want to now run a multiple regression. We want to run a new model that will add on a second IV: `lake`
+
+```{r}
+fishing$lake <- as.factor(fishing$lake)
+levels(fishing$lake)
+```
+
+In this case, the reference level is `Erie`. I like this and will not change the reference level.
+
+Now, it is time to build our multiple regression model. We will be predicting `grand_total` (DV) from `species` (IV 1) AND `lake` (IV 2). When you have correctly specified the `lm()` model, the `summary(mod.fish.multiple)` will run without error. This is running an INTERACTION Model. You can ignore the rows with `NA`s. The NA rows mean there are not data points for that specific combination of data points.
+
+```{r}
+mod.fish.multiple <- lm(grand_total ~ species * lake, data = fishing)
+summary(mod.fish.multiple)
+```
+
+Your job is to interpret:
+
+**The intercept**
+[RESPONSE HERE]
+
+
+**All significant slopes (main effects only)**
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+[RESPONSE HERE]
+
+**The R-Squared**
+[RESPONSE HERE]
+
+**How many significant interactions are there?**
+
+
+## Exercise 8 - 
+
+Next we will visualize the multiple regression model. This time, you must write your own ggplot code. Make sure you: make species the x axis, fill each bar by lake, add a theme,  label the x and y axes, label the fill title (legend), and add a title. Interpret what you see.
+
+```{r, warning = F, message = F}
+ggplot(fishing, aes(species, grand_total, fill = lake) )+
+  stat_summary(fun = "mean", geom = "bar", position = "dodge") +
+  labs(x = "Fish Species", y = "Mean Grand Total", fill = "Lake", title = "Fish Species")  +
+  theme_minimal()
+```
