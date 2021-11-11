@@ -41,6 +41,7 @@ index <- createDataPartition(office_df$____, )
 Below we are creating `office_train` (holds our data to use to train our cv model) and `office_test` (what we will use to test our final model). Correctly fill in the blanks using the index object we created. 
 
 ```{r train-test, error = TRUE}
+index <- as.numeric(unlist(index))
 office_train <- office_df[___, ]
 office_test  <- office_df[-___, ]
 ```
