@@ -227,21 +227,6 @@ ggplot(data = boot_df, mapping = aes(x = stat)) +
 
 ---
 
-## Interpret the confidence interval
-
-.question[
-The 95% confidence interval for the mean rent of three bedroom flats in Edinburgh was calculated as (`r lower_bound`, `r upper_bound`). Which of the following is the correct interpretation of this interval?
-
-**(a)** 95% of the time the mean rent of three bedroom flats in this sample is between £`r lower_bound` and £`r upper_bound`.
-
-**(b)** 95% of all three bedroom flats in Edinburgh have rents between £`r lower_bound` and £`r upper_bound`.
-
-**(c)** We are 95% confident that the mean rent of all three bedroom flats is between £`r lower_bound` and £`r upper_bound`.
-
-**(d)** We are 95% confident that the mean rent of three bedroom flats in this sample is between £`r lower_bound` and £`r upper_bound`.
-]
-
----
 
 class: middle
 
@@ -326,4 +311,3 @@ edi_3br %>%
 - We can do this for any sample statistic:
   - For a mean: `calculate(stat = "mean")`
   - For a median: `calculate(stat = "median")`
-  - Learn about calculating bootstrap intervals for other statistics in your homework
