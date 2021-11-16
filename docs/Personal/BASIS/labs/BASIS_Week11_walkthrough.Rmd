@@ -1,0 +1,154 @@
+---
+title: "Week 11 Lab"
+author: "YOUR NAME HERE"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2 
+---
+
+# Cross Validation: The Office Data
+
+```{r, warning = F, message = F}
+library(tidyverse)
+library(caret)
+```
+
+For this section you will be using data about the U.S. version of the television show *The Office*. 
+
+```{r, warning = F, message = F}
+office_df <- read_csv("data/the_office.csv") 
+```
+
+
+## Exercise 1: Partitioning the data.
+Create an index of for our data partitioning. 
+We are doing an 80/20 split so set `p = .8`.
+We do not want a list (we want a matrix) so set `list = FALSE`.
+Set `times = 1`
+Fill in the blank such that you are looking at `office_df$imdb_rating` in the first argument.
+
+
+```{r, error = TRUE}
+set.seed(1234) #set the seed so we can all reproduce results
+index <- createDataPartition(office_df$____, )
+```
+
+
+
+## Exercise 2: Create our testing & training datasets train_df and test_df
+
+Below we are creating `office_train` (holds our data to use to train our cv model) and `office_test` (what we will use to test our final model). Correctly fill in the blanks using the index object we created. 
+
+```{r train-test, error = TRUE}
+index <- as.numeric(unlist(index))
+office_train <- office_df[___, ]
+office_test  <- office_df[-___, ]
+```
+
+## Exercise 3: Specify the type of training method/numbers of folds to specify
+
+Now it is time for us to specify our cross-validation. Fill in the blanks below and:
+
+Use the `trainControl` function.
+Specify "cv" as the method.
+Set `number = 5`.
+Set `savePredictions = "all"`.
+
+```{r, error = TRUE}
+ctrl_specs <- ____(method = "___", number = ___, 
+                           savePredictions = "___")
+```
+
+
+
+## Exercise 4: Run our linear model
+
+Fill in the blanks for us to run our linear model via cross-validation. 
+Fill in the blanks and:
+Specify `imdb_rating` as the DV
+Specify a main effect only model (using '+' signs) for the following IVs: season, episode, michael
+Set `data = office_train`.
+Set `method = "lm"`
+Set trControl = ctrl_specs
+
+```{r, error = TRUE}
+#set another random seed for our random assignment in our folds
+set.seed(1990)
+
+model.1 <- train([DV] ~ [IV1] + [IV2] + [IV3],
+                 data = ___, method = "___", trControl = ___)
+```
+
+
+
+## Exercise 5: Model Outputs 
+
+Below, run the code to print the summary for model.1. Interpret the RSquared value.
+
+```{r, error = TRUE}
+print(model.1)
+```
+
+
+Below, run the code to print the statistics for each fold. We ran 5 folds. Interpret the RSquared value among the folds. Which fold performed the best and which fold performed the worst?
+
+```{r, error = TRUE}
+model.1$resample
+```
+
+## Exercise 6: See output in terms of regression coefficients
+
+Interpret the linear regression output (intercept, all slopes, adjusted RSquared)
+
+Reminder: `michael` is a binary variable (being treated as a factor). The 0 = michael scott is not in the episode and the 1 = michael scott is in the episode. 
+
+```{r fit,  eval=FALSE}
+summary(model.1)
+```
+
+ANSWER:
+
+## Exercise 7: Assess variable importance of the predictors
+
+Run the below code. Which variable is most important and which variable is least important?
+
+```{r, error = TRUE}
+varImp(model.1) 
+```
+
+ANSWER:
+
+## Exercise 8: Apply our model to the office_test dataframe
+
+Fill in the blank in order to predict the outcome using the model from `office_train` applied to the `office_test` data.
+
+```{r, error = TRUE}
+office_predictions <- predict(model.1, newdata = ___) 
+```
+
+## Exercise 9: Evaluate Model Metrics
+
+Run the below code and interpret the RSquared and RMSE.
+
+```{r, error = TRUE}
+data.frame(R2 = R2(office_predictions, office_test$imdb_rating),
+            RMSE = RMSE(office_predictions, office_test$imdb_rating))
+
+```
+
+ANSWER:
+
+## Exercise 9: Compare our Training Metrics to our Testing Matrix
+
+The below code will help you compare the r squared and RMSE from our training versus testing model. Interpret the output below.
+
+```{r, error = TRUE}
+data.frame(model.1$results[3],
+            R2_testing = R2(office_predictions, office_test$imdb_rating),
+            model.1$results[2],
+            RMSE_testing = RMSE(office_predictions, office_test$imdb_rating))
+
+```
+
+ANSWER:
