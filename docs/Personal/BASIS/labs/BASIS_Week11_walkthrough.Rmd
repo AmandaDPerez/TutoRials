@@ -139,7 +139,7 @@ data.frame(R2 = R2(office_predictions, office_test$imdb_rating),
 
 ANSWER:
 
-## Exercise 9: Compare our Training Metrics to our Testing Matrix
+## Exercise 10: Compare our Training Metrics to our Testing Metrics
 
 The below code will help you compare the r squared and RMSE from our training versus testing model. Interpret the output below.
 
