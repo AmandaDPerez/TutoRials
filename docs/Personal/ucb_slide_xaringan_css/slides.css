@@ -21,6 +21,7 @@
   --light-blue-faint: #A7D5E850;
   --pink-faint: #E9AFA350;
   --black: #000000;
+  --white: #ffffff;
 }
 
 /* Font colors */
@@ -38,6 +39,9 @@
 }
 .pink {
   color: var(--pink);
+}
+.white {
+  color: var(--white);
 }
 .yellow {
   color: var(--yellow);
@@ -67,7 +71,7 @@
 }
 
 .title-slide h3 {
-  color: var(--dark-blue);
+  color: var(--white);
   font-size: 130%;
 }
 
