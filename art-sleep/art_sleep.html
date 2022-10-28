@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>YouGov aRT &amp; Sleep</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="art_sleep_files/libs/clipboard/clipboard.min.js"></script>
+<script src="art_sleep_files/libs/quarto-html/quarto.js"></script>
+<script src="art_sleep_files/libs/quarto-html/popper.min.js"></script>
+<script src="art_sleep_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="art_sleep_files/libs/quarto-html/anchor.min.js"></script>
+<link href="art_sleep_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="art_sleep_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="art_sleep_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="art_sleep_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="art_sleep_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<script src="art_sleep_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="art_sleep_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#art-scale-items" id="toc-art-scale-items" class="nav-link active" data-scroll-target="#art-scale-items">aRT Scale Items</a></li>
+  <li><a href="#scoring-art-scale" id="toc-scoring-art-scale" class="nav-link" data-scroll-target="#scoring-art-scale">Scoring aRT Scale</a></li>
+  <li><a href="#correlation-matrix" id="toc-correlation-matrix" class="nav-link" data-scroll-target="#correlation-matrix">Correlation Matrix</a></li>
+  <li><a href="#model-summary" id="toc-model-summary" class="nav-link" data-scroll-target="#model-summary">Model Summary</a></li>
+  <li><a href="#visualizations" id="toc-visualizations" class="nav-link" data-scroll-target="#visualizations">Visualizations</a>
+  <ul class="collapse">
+  <li><a href="#showing-rc-main-effect" id="toc-showing-rc-main-effect" class="nav-link" data-scroll-target="#showing-rc-main-effect">Showing RC Main Effect</a></li>
+  <li><a href="#showing-awarenessexpecationsleep-trouble-interaction" id="toc-showing-awarenessexpecationsleep-trouble-interaction" class="nav-link" data-scroll-target="#showing-awarenessexpecationsleep-trouble-interaction">Showing Awareness/Expecation*Sleep Trouble Interaction</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">YouGov aRT &amp; Sleep</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<section id="art-scale-items" class="level2">
+<h2 class="anchored" data-anchor-id="art-scale-items">aRT Scale Items</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Confirmation Concern</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Stereotype awareness</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Awareness/expectation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Resilience</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Race consciousness</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<table class="table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 78%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Label</strong></td>
+<td><strong>Item</strong></td>
+</tr>
+<tr class="even">
+<td>Q9_13</td>
+<td><strong>I often think about how what I say or do could reinforce negative stereotypes about blacks</strong></td>
+</tr>
+<tr class="odd">
+<td>Q12_19</td>
+<td><strong>I have to make more of an effort at work because I know I am viewed/treated differently because of my race</strong></td>
+</tr>
+<tr class="even">
+<td>Q12_8</td>
+<td><strong>When I think I may be stereotyped, I change things about myself, like the way I talk or dress, so that people know I am not how they think I am</strong></td>
+</tr>
+<tr class="odd">
+<td>Q24_3</td>
+<td><strong>I purposely do things to prove to people that stereotypes about Blacks are not true</strong></td>
+</tr>
+<tr class="even">
+<td>Q12_26</td>
+<td><strong>Because of racial stereotypes, the way I’m dressed impacts people’s perception of me when I’m on the street or in a public setting</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 79%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Label</strong></td>
+<td><strong>Item</strong></td>
+</tr>
+<tr class="even">
+<td>Q16_9</td>
+<td><strong>In general, people assume that blacks are always angry</strong></td>
+</tr>
+<tr class="odd">
+<td>Q16_2</td>
+<td><strong>In general, people assume that blacks are not as educated as others</strong></td>
+</tr>
+<tr class="even">
+<td>Q16_3</td>
+<td><strong>In general, people assume that blacks are lazy</strong></td>
+</tr>
+<tr class="odd">
+<td>Q16_4</td>
+<td><strong>In general, people assume that blacks are dishonest</strong></td>
+</tr>
+<tr class="even">
+<td>Q16_5</td>
+<td><strong>In general, people assume that blacks are poor</strong></td>
+</tr>
+<tr class="odd">
+<td>Q16_12</td>
+<td><strong>In general, people assume that blacks are less likely to be married</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Label</th>
+<th>Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q26_3</td>
+<td>People who don’t even know me, make assumptions about me just because I’m black</td>
+</tr>
+<tr class="even">
+<td>Q12_12</td>
+<td><strong>Sometimes, I wonder if people treat me a certain way because of my race</strong></td>
+</tr>
+<tr class="odd">
+<td>Q12_6</td>
+<td><strong>On a day-to-day basis, I expect to deal with certain things just because I’m black</strong></td>
+</tr>
+<tr class="even">
+<td>Q12_23</td>
+<td><strong>As a black person, I know I have to work extra hard to get ahead because I don’t have the same opportunities or get the same level of support as others</strong></td>
+</tr>
+<tr class="odd">
+<td>Q12_5</td>
+<td><strong>I brace myself when I’m going into situations where I expect to experience racism</strong></td>
+</tr>
+<tr class="even">
+<td>Q26_2</td>
+<td><strong>Being viewed differently is a constant thing you have to deal with as a black person, so you just expect it</strong></td>
+</tr>
+<tr class="odd">
+<td>Q26_5</td>
+<td><strong>No matter what you have or what you’ve accomplished in life, people see you as black first</strong></td>
+</tr>
+<tr class="even">
+<td>Q26_1</td>
+<td><strong>No matter what I do, society still looks at me a certain way because I’m black</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<table class="table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Label</th>
+<th>Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q22_12</td>
+<td><strong>I've learned to accept the fact that racism is just part of life, so I don't let it bother me</strong></td>
+</tr>
+<tr class="even">
+<td>Q12_10</td>
+<td><strong>People's prejudices about blacks don't bother me, because I know who I am</strong></td>
+</tr>
+<tr class="odd">
+<td>Q22_2</td>
+<td><strong>Stereotypes about blacks don't bother me at all</strong></td>
+</tr>
+<tr class="even">
+<td>Q26_4</td>
+<td><strong>I don't spend much time thinking about whether society judges me because of my race</strong></td>
+</tr>
+<tr class="odd">
+<td>Q22_8</td>
+<td><strong>It doesn't matter to me if I am in the only black person in a social situation</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 79%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Label</th>
+<th>Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q26_16</td>
+<td><strong>I think about my race all the time, everywhere I go</strong></td>
+</tr>
+<tr class="even">
+<td>Q26_20</td>
+<td><strong>I think about my race all the time, especially when I'm around white people</strong></td>
+</tr>
+<tr class="odd">
+<td>Q26_8</td>
+<td><strong>I think about my race everyday</strong></td>
+</tr>
+<tr class="even">
+<td>Q26_17</td>
+<td><strong>I'm aware of my race when I'm at work</strong></td>
+</tr>
+<tr class="odd">
+<td>Q22_11</td>
+<td><strong>Sometimes other people's judgments about blacks affect how I see myself</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="scoring-art-scale" class="level2">
+<h2 class="anchored" data-anchor-id="scoring-art-scale">Scoring aRT Scale</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: scoreItems(keys = keys.list, items = mydata, min = 1, max = 5)
+
+(Unstandardized) Alpha:
+      ConCon   SA Aware  Res   RC
+alpha   0.82 0.93  0.89 0.71 0.82
+
+Standard errors of unstandardized Alpha:
+      ConCon    SA Aware  Res    RC
+ASE    0.024 0.014 0.014 0.03 0.023
+
+Average item correlation:
+          ConCon  SA Aware  Res   RC
+average.r   0.47 0.7  0.51 0.33 0.48
+
+Median item correlation:
+ConCon     SA  Aware    Res     RC 
+  0.48   0.66   0.50   0.31   0.50 
+
+ Guttman 6* reliability: 
+         ConCon   SA Aware Res   RC
+Lambda.6   0.81 0.94   0.9 0.7 0.84
+
+Signal/Noise based upon av.r : 
+             ConCon SA Aware Res  RC
+Signal/Noise    4.4 14   8.2 2.4 4.7
+
+Scale intercorrelations corrected for attenuation 
+ raw correlations below the diagonal, alpha on the diagonal 
+ corrected correlations above the diagonal:
+       ConCon    SA Aware   Res    RC
+ConCon   0.82  0.12  0.70 -0.34  0.70
+SA       0.10  0.93  0.33 -0.29  0.14
+Aware    0.59  0.30  0.89 -0.39  0.67
+Res     -0.26 -0.24 -0.31  0.71 -0.44
+RC       0.57  0.13  0.57 -0.34  0.82
+
+ In order to see the item by scale loadings and frequency counts of the data
+ print with the short option = FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="correlation-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-matrix">Correlation Matrix</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class=" lightable-classic lightable-striped" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Correlation Matrix</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> 1 </th>
+   <th style="text-align:left;"> 2 </th>
+   <th style="text-align:left;"> 3 </th>
+   <th style="text-align:left;"> 4 </th>
+   <th style="text-align:left;"> 5 </th>
+   <th style="text-align:left;"> 6 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 1. Confirmation Concern </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2. Stereotype Awareness </td>
+   <td style="text-align:left;"> 0.10* </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3. Awareness/Expectation </td>
+   <td style="text-align:left;"> 0.59**** </td>
+   <td style="text-align:left;"> 0.30**** </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4. Resilience </td>
+   <td style="text-align:left;"> -0.26**** </td>
+   <td style="text-align:left;"> -0.24**** </td>
+   <td style="text-align:left;"> -0.31**** </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5. Race Conscious </td>
+   <td style="text-align:left;"> 0.57**** </td>
+   <td style="text-align:left;"> 0.13** </td>
+   <td style="text-align:left;"> 0.57**** </td>
+   <td style="text-align:left;"> -0.34**** </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 6. Trouble Sleeping </td>
+   <td style="text-align:left;"> 0.11** </td>
+   <td style="text-align:left;"> 0.11* </td>
+   <td style="text-align:left;"> 0.15*** </td>
+   <td style="text-align:left;"> -0.15*** </td>
+   <td style="text-align:left;"> 0.11** </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 7. Hypertension </td>
+   <td style="text-align:left;"> 0.05 </td>
+   <td style="text-align:left;"> -0.04 </td>
+   <td style="text-align:left;"> 0.01 </td>
+   <td style="text-align:left;"> 0.09* </td>
+   <td style="text-align:left;"> 0.03 </td>
+   <td style="text-align:left;"> 0.09* </td>
+  </tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%"><sup></sup> p &lt; .*05, **p &lt; .01, ***p &lt; .001,****p &lt; .0001</td>
+</tr>
+</tfoot>
+</table>
+
+</div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="model-summary" class="level2">
+<h2 class="anchored" data-anchor-id="model-summary">Model Summary</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class=" lightable-classic lightable-striped" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>aRT Interaction Effect Model</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Term </th>
+   <th style="text-align:right;"> Odds Ratio </th>
+   <th style="text-align:right;"> SE </th>
+   <th style="text-align:right;"> Stat </th>
+   <th style="text-align:right;"> p </th>
+   <th style="text-align:right;"> CI Low </th>
+   <th style="text-align:right;"> CI High </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Intercept </td>
+   <td style="text-align:right;"> 0.03 </td>
+   <td style="text-align:right;"> 2.01 </td>
+   <td style="text-align:right;"> -1.69 </td>
+   <td style="text-align:right;"> 0.09 </td>
+   <td style="text-align:right;"> 0.00 </td>
+   <td style="text-align:right;"> 1.74 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Confirmation Concern </td>
+   <td style="text-align:right;"> 0.99 </td>
+   <td style="text-align:right;"> 0.25 </td>
+   <td style="text-align:right;"> -0.02 </td>
+   <td style="text-align:right;"> 0.98 </td>
+   <td style="text-align:right;"> 0.61 </td>
+   <td style="text-align:right;"> 1.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Stereotype Awareness </td>
+   <td style="text-align:right;"> 1.09 </td>
+   <td style="text-align:right;"> 0.13 </td>
+   <td style="text-align:right;"> 0.66 </td>
+   <td style="text-align:right;"> 0.51 </td>
+   <td style="text-align:right;"> 0.85 </td>
+   <td style="text-align:right;"> 1.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Awareness/Expectation </td>
+   <td style="text-align:right;font-weight: bold;"> 0.23 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.53 </td>
+   <td style="text-align:right;font-weight: bold;"> -2.76 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.01 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.08 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Trouble Sleeping </td>
+   <td style="text-align:right;"> 0.31 </td>
+   <td style="text-align:right;"> 0.64 </td>
+   <td style="text-align:right;"> -1.86 </td>
+   <td style="text-align:right;"> 0.06 </td>
+   <td style="text-align:right;"> 0.09 </td>
+   <td style="text-align:right;"> 1.07 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Resilience </td>
+   <td style="text-align:right;"> 1.38 </td>
+   <td style="text-align:right;"> 0.21 </td>
+   <td style="text-align:right;"> 1.53 </td>
+   <td style="text-align:right;"> 0.13 </td>
+   <td style="text-align:right;"> 0.91 </td>
+   <td style="text-align:right;"> 2.10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Race Consciousness </td>
+   <td style="text-align:right;font-weight: bold;"> 1.79 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.27 </td>
+   <td style="text-align:right;font-weight: bold;"> 2.19 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.03 </td>
+   <td style="text-align:right;font-weight: bold;"> 1.06 </td>
+   <td style="text-align:right;font-weight: bold;"> 3.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Age </td>
+   <td style="text-align:right;font-weight: bold;"> 1.09 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.02 </td>
+   <td style="text-align:right;font-weight: bold;"> 5.05 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.00 </td>
+   <td style="text-align:right;font-weight: bold;"> 1.06 </td>
+   <td style="text-align:right;font-weight: bold;"> 1.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Education </td>
+   <td style="text-align:right;"> 0.97 </td>
+   <td style="text-align:right;"> 0.13 </td>
+   <td style="text-align:right;"> -0.21 </td>
+   <td style="text-align:right;"> 0.83 </td>
+   <td style="text-align:right;"> 0.75 </td>
+   <td style="text-align:right;"> 1.26 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Employed </td>
+   <td style="text-align:right;"> 2.08 </td>
+   <td style="text-align:right;"> 0.39 </td>
+   <td style="text-align:right;"> 1.90 </td>
+   <td style="text-align:right;"> 0.06 </td>
+   <td style="text-align:right;"> 0.98 </td>
+   <td style="text-align:right;"> 4.44 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Family Income </td>
+   <td style="text-align:right;"> 0.96 </td>
+   <td style="text-align:right;"> 0.03 </td>
+   <td style="text-align:right;"> -1.32 </td>
+   <td style="text-align:right;"> 0.19 </td>
+   <td style="text-align:right;"> 0.91 </td>
+   <td style="text-align:right;"> 1.02 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> Awareness*Trouble Sleeping </td>
+   <td style="text-align:right;font-weight: bold;"> 1.52 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.17 </td>
+   <td style="text-align:right;font-weight: bold;"> 2.48 </td>
+   <td style="text-align:right;font-weight: bold;"> 0.01 </td>
+   <td style="text-align:right;font-weight: bold;"> 1.09 </td>
+   <td style="text-align:right;font-weight: bold;"> 2.12 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p><strong>Race Consciousness Main Effect:</strong> An increase in RC leads to a 79% higher odd of having hypertension.</p>
+</section>
+<section id="visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations">Visualizations</h2>
+<section id="showing-rc-main-effect" class="level3">
+<h3 class="anchored" data-anchor-id="showing-rc-main-effect">Showing RC Main Effect</h3>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="art_sleep_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="showing-awarenessexpecationsleep-trouble-interaction" class="level3">
+<h3 class="anchored" data-anchor-id="showing-awarenessexpecationsleep-trouble-interaction">Showing Awareness/Expecation*Sleep Trouble Interaction</h3>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Showing Never vs Always Trouble Sleeping</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Showing Never vs Sometimes vs Always Trouble Sleeping</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Showing Never vs Rarely vs Sometimes vs Usually vs Always Trouble Sleeping</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="art_sleep_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="art_sleep_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="art_sleep_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
